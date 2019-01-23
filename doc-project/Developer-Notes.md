@@ -46,6 +46,9 @@ If additional contributors join in, maybe we’ll need to change that to “we�
 
 * [GNU Octave code style](https://wiki.octave.org/Octave_style_guide) for M-code
 * [GNU Octave C++ code style](https://wiki.octave.org/C%2B%2B_style_guide) for C++
+  * Except:
+    * Not the GNU brace style. Use cuddled braces instead.
+    * Use braces around all blocks, including single-line ones.
 
 ### Markdown Style Guide
 
