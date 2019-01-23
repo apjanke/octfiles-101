@@ -2,7 +2,11 @@ Octfiles 101 TODO
 =================
 
 * Write some of the document.
+* Pick a license.
+* Write example code to go with the document.
 * Create a Makefile, to:
-  * Build all examples in `src`
+  * Build all examples.
+* Figure out a way to actually include the document examples from the source code, to ensure they're never out of sync, and always tested by compiling.
 * Travis CI setup
   * Build all examples. Maybe run them, too?
+* Find examples of Octave Forge packages that use Oct-Files and use them as reference.
