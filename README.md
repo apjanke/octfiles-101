@@ -1,16 +1,16 @@
-Octfiles 101
-============
+Oct-Files 101
+=============
 
 So you want to do some advanced GNU Octave programming?
 
-This document is a gentle introduction to the programming of octfiles.
-Octfiles are Octave extensions written in C++ that let you get performance or connectivity that is hard with basic Octave M-code.
+This document is a gentle introduction to the programming of oct-files.
+Oct-files are Octave extensions written in C++ that let you get performance or connectivity that is hard with regular Octave M-code.
 
-[Dive right in, the document starts here.](doc/index.md)
+[Dive right in, the guide starts here.](doc/Index.md)
 
 # About this project
 
-This is just something I threw together after I had to do a bit of octfile
+This is just something I threw together after I had to do a bit of oct-file
 programming but couldn't find an easy introduction to the basics.
 
 The project home is at [the Octfiles 101 repo on GitHub](https://github.com/apjanke/octfiles-101).

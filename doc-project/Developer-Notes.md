@@ -8,7 +8,7 @@ Oct-Files 101 Developer Notes
 # References
 
 * [The GNU Octave 4.4.1 Manual Oct-Files section](https://octave.org/doc/v4.4.1/Oct_002dFiles.html)
-* [Da Coda Al Fine - Pushing Octave‘s Limits](https://octave.sourceforge.io/coda/index.html) - An older 2004 document on Oct-Files and advanced Octave programming.
+* [Da Coda Al Fine - Pushing Octave‘s Limits](https://octave.sourceforge.io/coda/index.html) - An older 2004 document on oct-files and advanced Octave programming.
 * [ScaryOctave in the Wayback Machine](http://web.archive.org/web/20040430174704/http://wiki.octave.org:80/wiki.pl?ScaryOctave)
 * Mailing List and Forum Posts
   * [”Tutorial on Oct files” (2003)](http://octave.1599824.n4.nabble.com/Tutorial-on-Oct-files-td1617194.html) - An “Octave - General” post asking about other tutorials and not finding much. Its links are now 404.
@@ -32,6 +32,11 @@ Use:
   * But parallelism takes precedence over the above. (Like in this item.)
 
 * Hyperlinks should have descriptive text, not just something like “here”.
+
+### Authorial Voice
+
+The “I” in this guide is Andrew.
+If additional contributors join in, maybe we’ll need to change that to “we”, or get rid of it entirely.
 
 ## Code Style Guide
 
