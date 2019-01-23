@@ -13,6 +13,10 @@ Oct-Files 101 Developer Notes
 * Mailing List and Forum Posts
   * [”Tutorial on Oct files” (2003)](http://octave.1599824.n4.nabble.com/Tutorial-on-Oct-files-td1617194.html) - An “Octave - General” post asking about other tutorials and not finding much. Its links are now 404.
 
+Old versions of the Octave manual sometimes have stuff the new ones lack.
+
+* The [4.0.1 Oct-File Input Parameter Checking section](https://octave.org/doc/v4.0.1/Input-Parameter-Checking-in-Oct_002dFiles.html) uses `error()`; the current 4.4.1 one does not.
+
 # Style Guide
 
 ## Prose Style Guide
@@ -40,7 +44,8 @@ If additional contributors join in, maybe we’ll need to change that to “we�
 
 ## Code Style Guide
 
-* Standard [GNU Octave code style](https://wiki.octave.org/Octave_style_guide)
+* [GNU Octave code style](https://wiki.octave.org/Octave_style_guide) for M-code
+* [GNU Octave C++ code style](https://wiki.octave.org/C%2B%2B_style_guide) for C++
 
 ### Markdown Style Guide
 
