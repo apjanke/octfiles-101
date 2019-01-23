@@ -10,3 +10,6 @@ Octfiles 101 TODO
 * Travis CI setup
   * Build all examples. Maybe run them, too?
 * Find examples of Octave Forge packages that use Oct-Files and use them as reference.
+
+* See if Matlab/Octave syntax highlighting can be enabled in Markdown code snippets?
+  * The highlight.js page includes Matlab in the [“scientific” section](https://highlightjs.org/static/demo/).

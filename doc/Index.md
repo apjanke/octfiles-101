@@ -44,7 +44,7 @@ This document uses the following terms, which may or may not be offical Octave-s
 
 Here's the coding classic “Hello, World” written as an oct-file:
 
-```
+```C++
 #include <iostream>
 #include <octave/oct.h>
 
@@ -68,7 +68,7 @@ endfunction
 
 Let's break this down.
 
-```
+```c++
 #include <iostream>
 #include <octave/oct.h>
 ```
@@ -78,7 +78,7 @@ These `#includes` are C preprocessor statements that pull in "header" files, giv
 `#include <octave/oct.h>` pulls in Octave's oct-file API, which also includes the Octave internal API.
 Just put these in every oct-file.
 
-```
+```c++
 DEFUN_DLD (ex01_hello_world, args, nargout,
   "'Hello, world!' as an oct-file")
 ```
@@ -99,7 +99,7 @@ Put a `\n` newline at the end of each string in a multi-line help string.
 
 For example:
 
-```
+```c++
 DEFUN_DLD (ex01_hello_world, args, nargout,
   "'Hello, world!' as an oct-file\n"
   "\n"
@@ -109,7 +109,7 @@ DEFUN_DLD (ex01_hello_world, args, nargout,
 
 The code between the `{...}` braces is the body of your main oct-file function.
 
-```
+```c++
   octave_stdout << "Hello, world!" << std::endl;
 ```
 
@@ -117,7 +117,7 @@ This displays output to the Octave command window.
 In oct-files, you use `octave_stdout` instead of `std::out`.
 The `std::endl` adds a newline and flushes the output.
 
-```
+```c++
   return octave_value_list ();
 ```
 
@@ -158,7 +158,7 @@ endfunction
 
 Here's the oct-file equivalent:
 
-```
+```c++
 #include <cmath>
 #include <iostream>
 #include <octave/oct.h>
@@ -179,7 +179,7 @@ Let's break down the new stuff:
 `#include <cmath>` pulls in the C math header.
 You need this to get access to the `NAN` constant.
 
-```
+```c++
   NDArray x (42.0);
 ```
 
@@ -191,7 +191,7 @@ But because you're making an `NDArray`, whatever you pass in gets converted to a
 (Usually. You can't say `NDArray y(0);`. I don't know why.)
 `NDArray` knows its element data type, and that type is always `double`. I think.
 
-```
+```c++
 NDArray y (0.0);
 y(0) = NAN;
 ```
@@ -205,14 +205,14 @@ That gives you a `0` instead of `NaN`.
 I don't know why.
 Instead, you have to create a new array, and then assign over its element's value.
 
-```
+```c++
 NDArray out = x + y;
 ```
 
 You can do math with C++ Octave array types using `+`, `-`, `*`, and other arithmetic operators, similar to how you can in M-code.
 (_TODO: Find out whether `*` is `times` or `mtimes`._)
 
-```
+```c++
 return octave_value (out);
 ```
 
@@ -226,7 +226,7 @@ But you can omit the `octave_value_list (...)` around your `octave_value (...)` 
 
 To do useful work, we need to accept input arguments from our caller.
 
-```
+```c++
 #include <cmath>
 #include <iostream>
 #include <octave/oct.h>
@@ -269,14 +269,14 @@ endfunction
 
 Let's break it down:
 
-```
+```c++
   error ("Need exactly 2 argins, got ???");
 ```
 
 Calling `error()` in an oct-file behaves the same as calling `error()` in M-code: it aborts execution of the function, returning control to the interactive prompt, or an enclosing M-code `try`/`catch` block.
 Supposedly you can construct messages by passing multiple arguments to `error()`, but I can't get it to work.
 
-```
+```c++
 octave_value_list varargout;
 varargout(0) = my_diff;
 varargout(1) = my_product;
