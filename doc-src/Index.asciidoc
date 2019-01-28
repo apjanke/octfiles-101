@@ -49,7 +49,7 @@ oct function::
 Here's the coding classic “Hello, World” written as an oct-file:
 
 ---------------------------------------
-include::../src/ex01_hello_world.cc[]
+include::src/ex01_hello_world.cc[]
 ---------------------------------------
 
 This is the equivalent of the following M function:
@@ -158,7 +158,7 @@ endfunction
 Here's the oct-file equivalent:
 
 ---------------------------------------
-include::../src/ex02_scalar_numerics.cc[]
+include::src/ex02_scalar_numerics.cc[]
 ---------------------------------------
 
 Let's break down the new stuff:
@@ -215,7 +215,7 @@ But you can omit the `octave_value_list (...)` around your `octave_value (...)` 
 To do useful work, we need to accept input arguments from our caller.
 
 ---------------------------------------
-include::../src/ex03_inputes_and_error_checking.cc[]
+include::src/ex03_inputs_and_error_checking.cc[]
 ---------------------------------------
 
 
@@ -242,10 +242,10 @@ Note that if you pass strings in to `error()`, they must be C-style strings (`ch
 Also, the values passed in to `error()` need to be basic C++ types like `char *`, `int`, or `double`, not Octave API objects like `NDArray` or `Matrix`.
 
 ---------------------------------------
-octave_value_list varargout;
-varargout(0) = my_diff;
-varargout(1) = my_product;
-return varargout;
+  octave_value_list varargout;
+  varargout(0) = my_diff;
+  varargout(1) = my_product;
+  return varargout;
 ---------------------------------------
 
 You can assign into an `octave_value_list` using `()`-indexing, like you can with an `Array`, but the right-hand-side values must themselves be `octave_value`s or compatible.
