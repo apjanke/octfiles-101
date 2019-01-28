@@ -1,13 +1,13 @@
 
 .PHONY: site clean compile .FORCE
 
-site: docs/Index.html
+site: docs/index.html
 
 EXAMPLE_SRCFILES := $(wildcard docs-src/src/*.cc)
 
-docs/Index.html: docs docs-src/Index.asciidoc $(EXAMPLE_SRCFILES)
+docs/index.html: docs docs-src/index.asciidoc $(EXAMPLE_SRCFILES)
 	asciidoctor --safe --section-numbers --backend html5 \
-	  docs-src/Index.asciidoc -o docs/Index.html
+	  docs-src/index.asciidoc -o docs/index.html
 docs:
 	mkdir -p docs
 
