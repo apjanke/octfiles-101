@@ -2,3 +2,5 @@
 *.oct
 *.swp
 ~*
+!.idea
+cmake-build-debug
