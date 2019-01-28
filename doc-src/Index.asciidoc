@@ -139,6 +139,7 @@ Here are the basic ones:
 | `Matrix` | A 2-dimensional `double` array | `double`
 | `NDArray` | An N-dimensional `double` array | `double` (non-complex)
 | `charMatrix` | A 2-dimensional character array | `char`
+| `octave_map` | An array of name-value maps | `struct`
 |========================================
 
 _(TODO: Find out which, if any, of these are `abstract` types and note that.)_
@@ -218,14 +219,13 @@ To do useful work, we need to accept input arguments from our caller.
 include::src/ex03_inputs_and_error_checking.cc[]
 ---------------------------------------
 
-
 This is basically the equivalent of the M function:
 
 ---------------------------------------
-function [my_diff, my_product] = ex03_inputs_and_error_checking (x, y)
+function [a, b] = ex03_inputs_and_error_checking (x, y)
   narginchk (2, 2);
-  my_diff = x - y;
-  my_product = x .* y;
+  a = y;
+  b = x;
 endfunction
 ---------------------------------------
 
@@ -257,27 +257,69 @@ Any `std::string` needs to be converted to a `char *` by calling `c_str()` on it
 
 ---------------------------------------
   std::string some_string ("foobar");
-  error ("Something bad happened. Message: %s", some_string.c_str ());
+  error ("Uh oh. Message: %s", some_string.c_str ());
 ---------------------------------------
+
+The oct function's inputs are passed in as `octave_value` types in an `octave_value_list`.
+You use `array_value()` and related conversion functions to convert them into the more specific subtypes like `NDArray` which support arithmetic, typed value access, and other functionality.
+
+---------------------------------------
+  NDArray x = args(0).array_value ();
+---------------------------------------
+
+
+The oct function's outputs are always returned as an `octave_value_list`, which corresponds to a comma-separated list in M-code.
 
 ---------------------------------------
   octave_value_list varargout;
-  varargout(0) = my_diff;
-  varargout(1) = my_product;
+  varargout(0) = y;
+  varargout(1) = x;
   return varargout;
 ---------------------------------------
 
-You can assign into an `octave_value_list` using `()`-indexing, like you can with an `Array`, but the right-hand-side values must themselves be `octave_value`s or compatible.
+You can assign into an `octave_value_list` using `()`-indexing, like you can with an `Array`, but the right-hand-side values must themselves be ++octave_value++s or compatible types.
 
 You can't just say `return octave_value_list (my_diff, my_product)`.
 I don't know why.
 
+See https://octave.org/doc/v4.0.1/Input-Parameter-Checking-in-Oct_002dFiles.html[Input Parameter Checking in Oct-Files] for more details.
+
+===== Building Error Messages using +std::string+ =====
+
+Instead of using printf-style formatting using `%` placeholders, you can construct error message strings using `std::string` concatenation.
+This can be more concise, especially when working with `octave_idx_type` values or templated types. Just don't forget to call `c_str()` on it.
+
+---------------------------------------
+  octave_idx_type nargin = args.length ();
+  [...]
+  std::string msg = std::string ("Expected 2 inputs, got " + nargin);
+  error (msg.c_str ());
+---------------------------------------
+
+
+==== Basic Arithmetic ====
+
+You can do array math with `NDArray` and related classes similar to how you do it in M-code.
+
+---------------------------------------
+include::src/ex04_basic_arithmetic.cc[]
+---------------------------------------
+
+Let's break it down.
+
+---------------------------------------
+  NDArray my_sum = x + y;
+  NDArray my_difference = x - y;
+  NDArray my_product = x * y;
+---------------------------------------
+
+The `NDArray` class defines arithmetic operators like `+`, `-`, and so on.
+
 And here's where I'm stuck.
 I don't know why `x * y` fails to compile.
+Is array multiplication not defined?
 
 _Next step: look at some oct-files in Octave Forge packages to find examples._
-
-See [Input Parameter Checking in Oct-Files](https://octave.org/doc/v4.0.1/Input-Parameter-Checking-in-Oct_002dFiles.html) for more details.
 
 
 == Other Resources ==
