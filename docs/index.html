@@ -444,6 +444,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_introduction">1. Introduction</a>
 <ul class="sectlevel2">
 <li><a href="#_terminology">1.1. Terminology</a></li>
+<li><a href="#_setup">1.2. Setup</a></li>
 </ul>
 </li>
 <li><a href="#_writing_oct_files">2. Writing Oct-Files</a>
@@ -478,11 +479,11 @@ No prior oct-file experience is assumed.</p>
 <div class="paragraph">
 <p>Oct-files are Octave extensions written in C++ that make use of the same Octave internal API that Octave itself is written in.
 (I&#8217;m not sure what that API is called.)
-That API is in C++ and makes use of a lot of templates and inheritance, so it can be difficult to muddle through.</p>
+That API is in C++ and makes use of templates and inheritance, so it can be difficult to muddle through.</p>
 </div>
 <div class="paragraph">
 <p>I wrote this guide because I needed to write a few oct-files and couldn&#8217;t find a good introductory tutorial, and I wanted others to have an easier time of it than I did.
-The Octave manual&#8217;s [Oct-Files appendix](<a href="https://octave.org/doc/v4.4.1/Oct_002dFiles.html" class="bare">https://octave.org/doc/v4.4.1/Oct_002dFiles.html</a>) covers the oct-file interface and aspects of coding unique to it, but seems to presume a familiarity with the internal Octave API.
+The Octave manual&#8217;s <a href="https://octave.org/doc/v4.4.1/Oct_002dFiles.html">Oct-Files appendix</a> covers the oct-file interface and aspects of coding unique to it, but seems to presume a familiarity with the internal Octave API.
 I lacked that familiarity.
 This guide intends to step in for the beginner who also doesn&#8217;t know the internal Octave API, but wants to get a quick start being productive with oct-files.</p>
 </div>
@@ -490,7 +491,7 @@ This guide intends to step in for the beginner who also doesn&#8217;t know the i
 <p>Please note: I am myself an oct-file novice.
 I&#8217;m writing this document as I learn.
 Please forgive any mistakes.
-Or better yet, file an [Issue](<a href="https://github.com/apjanke/octfiles-101/issues" class="bare">https://github.com/apjanke/octfiles-101/issues</a>) and let me know what I did wrong.
+Or better yet, file an <a href="https://github.com/apjanke/octfiles-101/issues">Issue</a> and let me know what I did wrong.
 You can also contact me at &lt;<a href="mailto:floss@apjanke.net">floss@apjanke.net</a>&gt;.</p>
 </div>
 <div class="paragraph">
@@ -512,6 +513,22 @@ You can also contact me at &lt;<a href="mailto:floss@apjanke.net">floss@apjanke.
 <p>An Octave function defined by an oct-file. This is written in C++.</p>
 </dd>
 </dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setup">1.2. Setup</h3>
+<div class="paragraph">
+<p>The Octave internal API isn&#8217;t heavily documented, so you&#8217;re probably going to end up digging around in its header files for type definitions.
+This is a <em>lot</em> easier when using an IDE that can follow identifier references for you.</p>
+</div>
+<div class="paragraph">
+<p>This project uses CLion.
+If you want to “play along” and see all the example files in CLion, just clone the <a href="https://github.com/apjanke/octfiles-101">repo</a> and open it as a CLion project.</p>
+</div>
+<div class="paragraph">
+<p>There&#8217;s no free “community” edition of CLion, so if you don&#8217;t have a license, you&#8217;ll need to pick a different C++ IDE.
+I&#8217;m not very experienced with C++ IDEs, so I can&#8217;t recommend one.
+Anything that is CMake-aware will probably (maybe) work.</p>
 </div>
 </div>
 </div>
@@ -668,6 +685,11 @@ In M-code, these are all just held in untyped variables, but in C++, different k
 <td class="tableblock halign-left valign-top"><p class="tableblock">Any variable</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>MArray</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An N-dimensional array that has math operations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Any numeric array</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Matrix</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">A 2-dimensional <code>double</code> array</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>double</code></p></td>
@@ -684,7 +706,7 @@ In M-code, these are all just held in untyped variables, but in C++, different k
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>octave_map</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An array of name-value maps</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An array of name/value maps</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>struct</code></p></td>
 </tr>
 </tbody>
@@ -693,7 +715,7 @@ In M-code, these are all just held in untyped variables, but in C++, different k
 <p><em>(TODO: Find out which, if any, of these are <code>abstract</code> types and note that.)</em></p>
 </div>
 <div class="paragraph">
-<p><em>(TODO: Find out the difference between an <code>Array</code> and an <code>octave__value</code>.)</em></p>
+<p><em>(TODO: Find out the difference between an <code>Array</code> and an <code>octave_value</code>.)</em></p>
 </div>
 <div class="paragraph">
 <p>Consider this M function:</p>
@@ -740,13 +762,13 @@ You need this to get access to the <code>NAN</code> constant.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>An <code>NDArray</code> is an n-dimensional Octave <code>double</code> array. <code>NDArray &lt;name&gt; (&lt;x&gt;)</code>, where &lt;x&gt; is a C++ <code>double</code> value, creates a scalar (1-by-1) Octave <code>double</code> array and initializes it with the value you pass in.</p>
+<p>An <code>NDArray</code> is an n-dimensional Octave <code>double</code> array. <code>NDArray &lt;name&gt; (&lt;x&gt;)</code>, where <code>&lt;x&gt;</code> is a C++ <code>double</code> value, creates a scalar (1-by-1) Octave <code>double</code> array and initializes it with the value you pass in.</p>
 </div>
 <div class="paragraph">
 <p>In Octave, every numeric literal is a <code>double</code>, whether you write it as <code>42</code> or <code>42.0</code>.
 In C++, they&#8217;re distinct types: <code>42</code> is an <code>int</code>, and <code>42.0</code> is a <code>double</code>.
 But because you&#8217;re making an <code>NDArray</code>, whatever you pass in gets converted to a double.
-(Usually. You can&#8217;t say <code>NDArray y(0);</code>. I don&#8217;t know why.)
+(Usually. You can&#8217;t say <code>NDArray y(0)</code>. I don&#8217;t know why. Perhaps due to integer/null-pointer ambiguity?)
 <code>NDArray</code> knows its element data type, and that type is always <code>double</code>. I think.</p>
 </div>
 <div class="listingblock">
@@ -757,14 +779,15 @@ But because you&#8217;re making an <code>NDArray</code>, whatever you pass in ge
 </div>
 <div class="paragraph">
 <p>Once you create an <code>NDArray</code>, you can assign values to its elements using <code>()</code>-indexing, like you can in M-code.
-But, in C/C++, arrays are [zero-indexed](<a href="https://en.wikipedia.org/wiki/Zero-based_numbering" class="bare">https://en.wikipedia.org/wiki/Zero-based_numbering</a>) instead of 1-indexed like in M-code.
+But, in C/C++, arrays are <a href="https://en.wikipedia.org/wiki/Zero-based_numbering">zero-indexed</a> instead of 1-indexed like in M-code.
 And you index into an <code>NDArray</code> C-style.</p>
 </div>
 <div class="paragraph">
-<p>You can&#8217;t just say <code>NDArray y (NAN)</code> directly.
+<p>You can&#8217;t just say <code>NDArray y (NAN);</code> directly.
 That gives you a <code>0</code> instead of <code>NaN</code>.
 I don&#8217;t know why.
-Instead, you have to create a new array, and then assign over its element&#8217;s value.</p>
+Instead, you have to create a new array, and then assign over its element&#8217;s value.
+<em>(TODO: Find out why.)</em></p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -936,7 +959,7 @@ DEFUN_DLD (ex04_basic_arithmetic, args, nargout,
 
   NDArray my_sum = x + y;
   NDArray my_difference = x - y;
-  NDArray my_product = x * y;
+  NDArray my_product = x * y;  // Broken: "ambiguous overloaded operator" compiler error
 
   octave_value_list varargout;
   varargout(0) = my_sum;
@@ -953,7 +976,7 @@ DEFUN_DLD (ex04_basic_arithmetic, args, nargout,
 <div class="content">
 <pre>  NDArray my_sum = x + y;
   NDArray my_difference = x - y;
-  NDArray my_product = x * y;</pre>
+  NDArray my_product = x * y; // Broken: "ambiguous overloaded operator" compiler error</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -962,7 +985,36 @@ DEFUN_DLD (ex04_basic_arithmetic, args, nargout,
 <div class="paragraph">
 <p>And here&#8217;s where I&#8217;m stuck.
 I don&#8217;t know why <code>x * y</code> fails to compile.
-Is array multiplication not defined?</p>
+The error I get is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>ex04_basic_arithmetic.cc:13:26: error: use of overloaded operator '*' is ambiguous (with operand
+      types 'NDArray' and 'NDArray')
+  NDArray my_product = x * y;  // Broken: "ambiguous" compiler error
+                       ~ ^ ~
+/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-nda-i8.h:9:1: note: candidate
+      function
+NDS_BIN_OP_DECLS (int8NDArray, NDArray, octave_int8, OCTAVE_API)
+^
+/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-op-decl.h:161:19: note: expanded
+      from macro 'NDS_BIN_OP_DECLS'
+  BIN_OP_DECL (R, operator *, ND, S, API);      \
+                  ^
+/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-i8-nda.h:9:1: note: candidate
+      function
+SND_BIN_OP_DECLS (int8NDArray, octave_int8, NDArray, OCTAVE_API)
+^
+/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-op-decl.h:188:19: note: expanded
+      from macro 'SND_BIN_OP_DECLS'
+  BIN_OP_DECL (R, operator *, S, ND, API);      \
+                  ^
+[...]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>I don&#8217;t know why it&#8217;s finding so many matches.
+Shouldn&#8217;t there be an exact-match <code>NDArray, NDArray</code> one?</p>
 </div>
 <div class="paragraph">
 <p><em>Next step: look at some oct-files in Octave Forge packages to find examples.</em></p>
@@ -998,7 +1050,7 @@ Tag your question with the <a href="https://stackoverflow.com/questions/tagged/o
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-01-28 16:42:34 -0500
+Last updated 2019-01-28 17:00:42 -0500
 </div>
 </div>
 </body>

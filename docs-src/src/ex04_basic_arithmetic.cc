@@ -10,7 +10,7 @@ DEFUN_DLD (ex04_basic_arithmetic, args, nargout,
 
   NDArray my_sum = x + y;
   NDArray my_difference = x - y;
-  NDArray my_product = x * y;
+  NDArray my_product = x * y;  // Broken: "ambiguous overloaded operator" compiler error
 
   octave_value_list varargout;
   varargout(0) = my_sum;

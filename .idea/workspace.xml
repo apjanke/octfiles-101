@@ -12,8 +12,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ca9a1315-b06b-4ffd-bf4f-91902500049f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/doc-src/Index.asciidoc" beforeDir="false" afterPath="$PROJECT_DIR$/doc-src/Index.asciidoc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc-src/src/ex03_inputs_and_error_checking.cc" beforeDir="false" afterPath="$PROJECT_DIR$/doc-src/src/ex03_inputs_and_error_checking.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-src/index.asciidoc" beforeDir="false" afterPath="$PROJECT_DIR$/docs-src/index.asciidoc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-src/src/ex04_basic_arithmetic.cc" beforeDir="false" afterPath="$PROJECT_DIR$/docs-src/src/ex04_basic_arithmetic.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,41 +27,6 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/doc-src/src/ex01_hello_world.cc">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/doc-src/src/ex03_inputs_and_error_checking.cc">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#16#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/doc-src/src/ex04_basic_arithmetic.cc">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="27" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
-              <folding>
-                <element signature="e#0#16#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file:///usr/local/include/octave-4.4.1/octave/ov.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-2068">
@@ -73,7 +39,7 @@
         <entry file="file:///usr/local/include/octave-4.4.1/octave/dNDArray.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1095">
-              <caret line="78" column="45" lean-forward="true" selection-start-line="78" selection-start-column="45" selection-end-line="78" selection-end-column="45" />
+              <caret line="78" column="45" selection-start-line="78" selection-start-column="45" selection-end-line="78" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -81,8 +47,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file:///usr/local/include/octave-4.4.1/octave/MArray.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="70">
-              <caret line="71" column="40" lean-forward="true" selection-start-line="71" selection-start-column="40" selection-end-line="71" selection-end-column="40" />
+            <state relative-caret-position="935">
+              <caret line="71" column="30" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file:///usr/local/include/octave-4.4.1/octave/dim-vector.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1200">
+              <caret line="88" selection-start-line="88" selection-end-line="88" />
             </state>
           </provider>
         </entry>
@@ -115,7 +90,7 @@
     <option name="x" value="1239" />
     <option name="y" value="23" />
     <option name="width" value="1321" />
-    <option name="height" value="1358" />
+    <option name="height" value="1259" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -131,17 +106,6 @@
             <path>
               <item name="octfiles_101" type="b2602c69:ProjectViewProjectNode" />
               <item name="octfiles-101" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="octfiles_101" type="b2602c69:ProjectViewProjectNode" />
-              <item name="octfiles-101" type="462c0819:PsiDirectoryNode" />
-              <item name="doc-src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="octfiles_101" type="b2602c69:ProjectViewProjectNode" />
-              <item name="octfiles-101" type="462c0819:PsiDirectoryNode" />
-              <item name="doc-src" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="octfiles_101" type="b2602c69:ProjectViewProjectNode" />
@@ -193,15 +157,15 @@
       <workItem from="1548662435002" duration="1194000" />
       <workItem from="1548685771177" duration="217000" />
       <workItem from="1548705816192" duration="160000" />
-      <workItem from="1548706002359" duration="1644000" />
+      <workItem from="1548706002359" duration="1796000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3215000" />
+    <option name="totallyTimeSpent" value="3367000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1239" y="23" width="1321" height="1358" extended-state="0" />
+    <frame x="1239" y="23" width="1321" height="1259" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22673965" />
@@ -271,13 +235,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/local/include/octave-4.4.1/octave/MArray.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="70">
-          <caret line="71" column="40" lean-forward="true" selection-start-line="71" selection-start-column="40" selection-end-line="71" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc-src/src/ex03_inputs_and_error_checking.cc">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -291,7 +248,7 @@
     <entry file="file:///usr/local/include/octave-4.4.1/octave/dNDArray.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1095">
-          <caret line="78" column="45" lean-forward="true" selection-start-line="78" selection-start-column="45" selection-end-line="78" selection-end-column="45" />
+          <caret line="78" column="45" selection-start-line="78" selection-start-column="45" selection-end-line="78" selection-end-column="45" />
         </state>
       </provider>
     </entry>
@@ -309,6 +266,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2068">
           <caret line="288" column="58" selection-start-line="288" selection-start-column="58" selection-end-line="288" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/include/octave-4.4.1/octave/MArray.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="935">
+          <caret line="71" column="30" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/include/octave-4.4.1/octave/dim-vector.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1200">
+          <caret line="88" selection-start-line="88" selection-end-line="88" />
         </state>
       </provider>
     </entry>

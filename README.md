@@ -6,7 +6,7 @@ So you want to do some advanced GNU Octave programming?
 This document is a gentle introduction to the programming of oct-files.
 Oct-files are Octave extensions written in C++ that let you get performance or connectivity that is hard with regular Octave M-code.
 
-[Dive right in, the guide starts here.](doc/Index.md)
+You can read the guide online at https://apjanke.github.io/octfiles-101/.
 
 # About this project
 

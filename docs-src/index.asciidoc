@@ -15,17 +15,19 @@ No prior oct-file experience is assumed.
 
 Oct-files are Octave extensions written in C\++ that make use of the same Octave internal API that Octave itself is written in.
 (I'm not sure what that API is called.)
-That API is in C++ and makes use of a lot of templates and inheritance, so it can be difficult to muddle through.
+That API is in C++ and makes use of templates and inheritance, so it can be difficult to muddle through.
 
 I wrote this guide because I needed to write a few oct-files and couldn't find a good introductory tutorial, and I wanted others to have an easier time of it than I did.
-The Octave manual's [Oct-Files appendix](https://octave.org/doc/v4.4.1/Oct_002dFiles.html) covers the oct-file interface and aspects of coding unique to it, but seems to presume a familiarity with the internal Octave API.
+The Octave manual's https://octave.org/doc/v4.4.1/Oct_002dFiles.html[Oct-Files appendix] covers the oct-file interface and aspects of coding unique to it, but seems to presume a familiarity with the internal Octave API.
 I lacked that familiarity.
 This guide intends to step in for the beginner who also doesn't know the internal Octave API, but wants to get a quick start being productive with oct-files.
+
+You can read this guide online at https://apjanke.github.io/octfiles-101.
 
 Please note: I am myself an oct-file novice.
 I'm writing this document as I learn.
 Please forgive any mistakes.
-Or better yet, file an [Issue](https://github.com/apjanke/octfiles-101/issues) and let me know what I did wrong.
+Or better yet, file an https://github.com/apjanke/octfiles-101/issues[Issue] and let me know what I did wrong.
 You can also contact me at <floss@apjanke.net>.
 
 This guide was written and tested with Octave 4.4, primarily on macOS, but it should apply to other versions and OSes as well.
@@ -40,6 +42,17 @@ M function::
 oct function::
   An Octave function defined by an oct-file. This is written in C++.
 
+=== Setup ===
+
+The Octave internal API isn't heavily documented, so you're probably going to end up digging around in its header files for type definitions.
+This is a _lot_ easier when using an IDE that can follow identifier references for you.
+
+This project uses CLion.
+If you want to “play along” and see all the example files in CLion, just clone the https://github.com/apjanke/octfiles-101[repo] and open it as a CLion project.
+
+There's no free “community” edition of CLion, so if you don't have a license, you'll need to pick a different C\++ IDE.
+I'm not very experienced with C++ IDEs, so I can't recommend one.
+Anything that is CMake-aware will probably (maybe) work.
 
 == Writing Oct-Files ==
 
@@ -137,15 +150,16 @@ Here are the basic ones:
 | `octave_value` | A single Octave array | Any variable 
 | `octave_value_list` | A list of Octave arrays | A comma-separated list 
 | `Array` | An N-dimensional array of any type | Any variable
+| `MArray` | An N-dimensional array that has math operations | Any numeric array
 | `Matrix` | A 2-dimensional `double` array | `double`
 | `NDArray` | An N-dimensional `double` array | `double` (non-complex)
 | `charMatrix` | A 2-dimensional character array | `char`
-| `octave_map` | An array of name-value maps | `struct`
+| `octave_map` | An array of name/value maps | `struct`
 |========================================
 
 _(TODO: Find out which, if any, of these are `abstract` types and note that.)_
 
-_(TODO: Find out the difference between an `Array` and an `octave__value`.)_
+_(TODO: Find out the difference between an `Array` and an `octave_value`.)_
 
 Consider this M function:
 
@@ -172,12 +186,12 @@ You need this to get access to the `NAN` constant.
   NDArray x (42.0);
 ---------------------------------------
 
-An `NDArray` is an n-dimensional Octave `double` array. `NDArray <name> (<x>)`, where <x> is a C++ `double` value, creates a scalar (1-by-1) Octave `double` array and initializes it with the value you pass in.
+An `NDArray` is an n-dimensional Octave `double` array. `NDArray <name> (<x>)`, where `<x>` is a C++ `double` value, creates a scalar (1-by-1) Octave `double` array and initializes it with the value you pass in.
 
 In Octave, every numeric literal is a `double`, whether you write it as `42` or `42.0`.
 In C++, they're distinct types: `42` is an `int`, and `42.0` is a `double`.
 But because you're making an `NDArray`, whatever you pass in gets converted to a double.
-(Usually. You can't say `NDArray y(0);`. I don't know why.)
+(Usually. You can't say `NDArray y(0)`. I don't know why. Perhaps due to integer/null-pointer ambiguity?)
 `NDArray` knows its element data type, and that type is always `double`. I think.
 
 ---------------------------------------
@@ -186,13 +200,14 @@ But because you're making an `NDArray`, whatever you pass in gets converted to a
 ---------------------------------------
 
 Once you create an `NDArray`, you can assign values to its elements using `()`-indexing, like you can in M-code.
-But, in C/C++, arrays are [zero-indexed](https://en.wikipedia.org/wiki/Zero-based_numbering) instead of 1-indexed like in M-code.
+But, in C/C++, arrays are https://en.wikipedia.org/wiki/Zero-based_numbering[zero-indexed] instead of 1-indexed like in M-code.
 And you index into an `NDArray` C-style.
 
-You can't just say `NDArray y (NAN)` directly.
+You can't just say `NDArray y (NAN);` directly.
 That gives you a `0` instead of `NaN`.
 I don't know why.
 Instead, you have to create a new array, and then assign over its element's value.
+_(TODO: Find out why.)_
 
 ---------------------------------------
   NDArray out = x + y;
@@ -297,7 +312,6 @@ This can be more concise, especially when working with `octave_idx_type` values 
   error (msg.c_str ());
 ---------------------------------------
 
-
 ==== Basic Arithmetic ====
 
 You can do array math with `NDArray` and related classes similar to how you do it in M-code.
@@ -311,16 +325,55 @@ Let's break it down.
 ---------------------------------------
   NDArray my_sum = x + y;
   NDArray my_difference = x - y;
-  NDArray my_product = x * y;
+  NDArray my_product = x * y; // Broken: "ambiguous overloaded operator" compiler error
 ---------------------------------------
 
 The `NDArray` class defines arithmetic operators like `+`, `-`, and so on.
 
 And here's where I'm stuck.
 I don't know why `x * y` fails to compile.
-Is array multiplication not defined?
+The error I get is:
+
+---------------------------------------
+ex04_basic_arithmetic.cc:13:26: error: use of overloaded operator '*' is ambiguous (with operand
+      types 'NDArray' and 'NDArray')
+  NDArray my_product = x * y;  // Broken: "ambiguous" compiler error
+                       ~ ^ ~
+/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-nda-i8.h:9:1: note: candidate
+      function
+NDS_BIN_OP_DECLS (int8NDArray, NDArray, octave_int8, OCTAVE_API)
+^
+/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-op-decl.h:161:19: note: expanded
+      from macro 'NDS_BIN_OP_DECLS'
+  BIN_OP_DECL (R, operator *, ND, S, API);      \
+                  ^
+/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-i8-nda.h:9:1: note: candidate
+      function
+SND_BIN_OP_DECLS (int8NDArray, octave_int8, NDArray, OCTAVE_API)
+^
+/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-op-decl.h:188:19: note: expanded
+      from macro 'SND_BIN_OP_DECLS'
+  BIN_OP_DECL (R, operator *, S, ND, API);      \
+                  ^
+[...]
+---------------------------------------
+
+I don't know why it's finding so many matches.
+Shouldn't there be an exact-match `NDArray, NDArray` one?
+
 
 _Next step: look at some oct-files in Octave Forge packages to find examples._
+
+==== Array Sizes and Indexing ====
+
+In M-code, you just use doubles to represent array sizes and indexes. In C++, there's a few types used for this.
+
+[frame="topbot",options="header"]
+|========================================
+| C++ Type | Meaning 
+| `octave_idx_type` | Array index, subscript, or size element
+| `dim_vector` | Array size (dimensions)
+|========================================
 
 
 == Other Resources ==
