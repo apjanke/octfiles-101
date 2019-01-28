@@ -11,11 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ca9a1315-b06b-4ffd-bf4f-91902500049f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/docs-src/index.asciidoc" beforeDir="false" afterPath="$PROJECT_DIR$/docs-src/index.asciidoc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs-src/src/ex04_basic_arithmetic.cc" beforeDir="false" afterPath="$PROJECT_DIR$/docs-src/src/ex04_basic_arithmetic.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.html" afterDir="false" />
-    </list>
+    <list default="true" id="ca9a1315-b06b-4ffd-bf4f-91902500049f" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -56,8 +52,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file:///usr/local/include/octave-4.4.1/octave/dim-vector.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1200">
-              <caret line="88" selection-start-line="88" selection-end-line="88" />
+            <state relative-caret-position="332">
+              <caret line="54" column="26" lean-forward="true" selection-start-line="54" selection-start-column="26" selection-end-line="54" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -87,7 +83,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1239" />
+    <option name="x" value="542" />
     <option name="y" value="23" />
     <option name="width" value="1321" />
     <option name="height" value="1259" />
@@ -106,6 +102,17 @@
             <path>
               <item name="octfiles_101" type="b2602c69:ProjectViewProjectNode" />
               <item name="octfiles-101" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="octfiles_101" type="b2602c69:ProjectViewProjectNode" />
+              <item name="octfiles-101" type="462c0819:PsiDirectoryNode" />
+              <item name="docs-src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="octfiles_101" type="b2602c69:ProjectViewProjectNode" />
+              <item name="octfiles-101" type="462c0819:PsiDirectoryNode" />
+              <item name="docs-src" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="octfiles_101" type="b2602c69:ProjectViewProjectNode" />
@@ -157,16 +164,15 @@
       <workItem from="1548662435002" duration="1194000" />
       <workItem from="1548685771177" duration="217000" />
       <workItem from="1548705816192" duration="160000" />
-      <workItem from="1548706002359" duration="1796000" />
+      <workItem from="1548706002359" duration="1953000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3367000" />
+    <option name="totallyTimeSpent" value="3524000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1239" y="23" width="1321" height="1259" extended-state="0" />
-    <editor active="true" />
+    <frame x="542" y="23" width="1321" height="1259" extended-state="0" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22673965" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -278,8 +284,8 @@
     </entry>
     <entry file="file:///usr/local/include/octave-4.4.1/octave/dim-vector.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1200">
-          <caret line="88" selection-start-line="88" selection-end-line="88" />
+        <state relative-caret-position="332">
+          <caret line="54" column="26" lean-forward="true" selection-start-line="54" selection-start-column="26" selection-end-line="54" selection-end-column="26" />
         </state>
       </provider>
     </entry>
