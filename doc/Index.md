@@ -236,12 +236,7 @@ DEFUN_DLD (ex03_inputs_and_error_checking, args, nargout,
 {
   int nargin = args.length ();
   if (nargin != 2) {
-  	// None of these will compile for me. I wonder why?
-  	// error ("Need exactly 2 argins, got %d", nargin);
-  	// error (std::string ("Need exaclty 2 argins, got ") + nargin);
-  	// std::string msg = std::string ("Need exactly 2 argins; got ") + nargin;
-  	// error (msg);
-  	error ("Need exactly 2 argins, got ???");
+  	error ("Need exactly 2 argins, got %d", nargin);
   }
   NDArray x = args(0).array_value ();
   NDArray y = args(1).array_value ();
@@ -270,11 +265,14 @@ endfunction
 Let's break it down:
 
 ```c++
-  error ("Need exactly 2 argins, got ???");
+  error ("Need exactly 2 argins, got %d", nargin);
 ```
 
-Calling `error()` in an oct-file behaves the same as calling `error()` in M-code: it aborts execution of the function, returning control to the interactive prompt, or an enclosing M-code `try`/`catch` block.
-Supposedly you can construct messages by passing multiple arguments to `error()`, but I can't get it to work.
+Calling `error()` in an oct-file behaves the same as calling `error()` in M-code: it aborts execution of the function, returning control to the interactive prompt, or an enclosing M-code `try`/`catch` block. You can pass multiple arguments to `error()`, in which case the first argument is a `printf`-style format string, and the remaining arguments are values to substitue into the format string's placeholders. This is a good thing to make use of, because it lets you include information about the actual data values that caused a problem, making it easier to debug.
+
+Note that if you pass strings in to `error()`, they must be C-style strings (`char *`s) and not C++ `std::string` objects. Any `std::string` needs to be converted to a `char *` by calling `c_str()` on it.
+
+Also, the values passed in to `error()` need to be basic C++ types like `char *`, `int`, or `double`, not Octave API objects like `NDArray` or `Matrix`.
 
 ```c++
 octave_value_list varargout;
@@ -283,14 +281,13 @@ varargout(1) = my_product;
 return varargout;
 ```
 
-You can assign into an `octave_value_list` using `()`-indexing, like you can with an `Array`, but the right-hand-side values must themselves be `octave_value`s or
+You can assign into an `octave_value_list` using `()`-indexing, like you can with an `Array`, but the right-hand-side values must themselves be `octave_value`s or compatible.
 
 You can't just say `return octave_value_list (my_diff, my_product)`.
 I don't know why.
 
 And here's where I'm stuck.
-I don't know why I can't construct error messages with `printf`-style formatting or `std::string` concatenation.
-And I don't know why `x * y` fails to compile.
+I don't know why `x * y` fails to compile.
 
 _Next step: look at some oct-files in Octave Forge packages to find examples._
 
