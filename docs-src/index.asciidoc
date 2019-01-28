@@ -325,16 +325,16 @@ _Next step: look at some oct-files in Octave Forge packages to find examples._
 
 == Other Resources ==
 
-[The GNU Octave 4.4.1 Manual Oct-Files section](https://octave.org/doc/v4.4.1/Oct_002dFiles.html) – This is the official reference on oct-files.
+https://octave.org/doc/v4.4.1/Oct_002dFiles.html[The GNU Octave 4.4.1 Manual Oct-Files section] – This is the official reference on oct-files.
 
-[Da Coda Al Fine - Pushing Octave‘s Limits](https://octave.sourceforge.io/coda/index.html) – An older 2004 document on advanced Octave programming.
+https://octave.sourceforge.io/coda/index.html[Da Coda Al Fine - Pushing Octave‘s Limits] – An older 2004 document on advanced Octave programming.
 Contains a section on oct-files.
 
-The `#octave` channel on [freenode IRC](https://freenode.net/) is often populated with Octave hackers, including Octave's core developers.
+The `#octave` channel on https://freenode.net/[freenode IRC] is often populated with Octave hackers, including Octave's core developers.
 You can ask oct-file questions there.
 
 The Octave source code is the real low-level reference on the Octave internal API used by oct-files.
 The relevant definitions are in the `*.h` header files in `liboctave/` and `libinterp/`.
 
-[StackOverflow](https://stackoverflow.com) is the web's premiere Q&A site for programmers.
-Tag your question with the [“octave” tag](https://stackoverflow.com/questions/tagged/octave).
+https://stackoverflow.com[StackOverflow] is the web's premiere Q&A site for programmers.
+Tag your question with the https://stackoverflow.com/questions/tagged/octave[“octave” tag].
