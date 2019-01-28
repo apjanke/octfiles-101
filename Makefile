@@ -1,18 +1,18 @@
 
 .PHONY: site clean compile .FORCE
 
-site: doc/Index.html
+site: docs/Index.html
 
-EXAMPLE_SRCFILES := $(wildcard doc-src/src/*.cc)
+EXAMPLE_SRCFILES := $(wildcard docs-src/src/*.cc)
 
-doc/Index.html: doc-src/Index.asciidoc $(EXAMPLE_SRCFILES)
+docs/Index.html: docs docs-src/Index.asciidoc $(EXAMPLE_SRCFILES)
 	asciidoctor --safe --section-numbers --backend html5 \
-	  doc-src/Index.asciidoc -o doc/Index.html
-doc:
-	mkdir -p doc
+	  docs-src/Index.asciidoc -o docs/Index.html
+docs:
+	mkdir -p docs
 
 compile: .FORCE
-	cd doc-src/src && make compile
+	cd docs-src/src && make compile
 
 clean:
-	rm -f doc-src/src/*.o doc-src/src/*.oct
+	rm -f docs-src/src/*.o docs-src/src/*.oct
