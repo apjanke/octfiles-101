@@ -5,6 +5,27 @@ Oct-Files 101 Developer Notes
 
 * The [TODO](TODO.md)
 
+# Repo Structure
+
+* `.idea` - CLion project for example code
+* `doc` - The built site documents, generated from doc-src
+* `doc-src` - The source for the documents in doc
+  * `src` - Source code for examples and other snippets
+* `scratch` - Dumping ground for test code and in-progress stuff
+* `CMakeLists` - Exists just for CLion project support. Don't actually build stuff with this.
+* `Makefile` - Actual build control file.
+
+# Developer Setup
+
+* Install:
+  * CLion
+  * Asciidoctor
+  * Octave 4.4
+  * Atom
+    * Atom's Asciidoc Preview package
+
+Do `make site` to build the HTML documents. Do `make compile` to compile all the examples to verify them.
+
 # References
 
 * [The GNU Octave 4.4.1 Manual Oct-Files section](https://octave.org/doc/v4.4.1/Oct_002dFiles.html)
