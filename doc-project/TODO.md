@@ -3,6 +3,8 @@ Octfiles 101 TODO
 
 ## Project
 
+* Convert to Asciidoc
+  * So we can include code snippets directly from source code files
 * Pick a license. Probably GPL or GNU FDL.
   * About the GFDL
     * See <https://www.adamhyde.net/1198-2/>
@@ -18,7 +20,7 @@ Octfiles 101 TODO
   * Build and test all examples.
   * Figure out a way to actually include the document examples from the source code, to ensure they're never out of sync, and always tested by compiling.
 
-## Document
+## Document Content
 
 ### Next Steps
 
