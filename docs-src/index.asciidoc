@@ -271,6 +271,10 @@ The values passed in to `error()` need to be basic C++ types like `char *`, `int
 Note that if you pass strings in to `error()`, they must be C-style strings (`char *`) and not C++ `std::string` objects.
 Any `std::string` needs to be converted to a `char *` by calling `c_str()` on it.
 
+As in M-code, `warning()` works the same way as `error()`, accepting `printf`-style arguments.
+
+If you want to include an error or warning identifier, you can't just include the ID as an extra first argument like in M-code. You need to call the `error_with_id` or `warning_with_id` variants instead.
+
 ---------------------------------------
   std::string some_string ("foobar");
   error ("Uh oh. Message: %s", some_string.c_str ());
