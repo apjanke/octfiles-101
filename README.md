@@ -15,11 +15,7 @@ programming but couldn't find an easy introduction to the basics.
 
 The project home is at [the Octfiles 101 repo on GitHub](https://github.com/apjanke/octfiles-101).
 Contributions of all sorts, including bug reports, suggestions, and complaints, are welcome.
-Post on the [Issue Tracker](https://github.com/apjanke/octfiles-101/issues) if you have one.
-
-The document itself is in `doc/`.
-Source code for examples is in `src/`.
-"Meta-documentation" about the project is in `doc-project`.
+Post on the [Issue Tracker](https://github.com/apjanke/octfiles-101/issues) if you have one. See [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 This project is totally a work in progress.
 

@@ -16,6 +16,14 @@ Basics
 * Issues and changes should be small and focused on a particular topic.
 * Contributors are expected to abide by the [code of conduct](CODE_OF_CONDUCT.md).
 
+Copyright and Licensing
+-----------------------
+
+I haven't decided on a license yet.
+I'm still researching the GFDL and related licenses.
+
+So for now, since I want to retain the ability to easily relicense the project, I'm asking that all contributions include assignment of copyringt to me.
+
 Community
 ---------
 
