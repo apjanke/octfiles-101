@@ -7,12 +7,12 @@ Oct-Files 101 Developer Notes
 
 # Repo Structure
 
-* `.idea` - CLion project for example code
-* `docs` - The built site documents, generated from doc-src
-* `docs-src` - The source for the documents in doc
-  * `src` - Source code for examples and other snippets
-* `doc-project` - Meta-documentation about the project
-* `scratch` - Dumping ground for test code and in-progress stuff
+* `.idea` - CLion project for example code.
+* `docs` - The built site documents, generated from doc-src.
+* `docs-src` - The source for the documents in doc.
+  * `src` - Source code for examples and other snippets. Everything in here must compile.
+* `doc-project` - Meta-documentation about the project.
+* `scratch` - Dumping ground for test code and in-progress stuff. Stuff in here is not expected to compile.
 * `CMakeLists` - Exists just for CLion project support. Don't actually build stuff with this.
 * `Makefile` - Actual build control file.
 

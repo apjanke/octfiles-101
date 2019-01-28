@@ -375,6 +375,56 @@ In M-code, you just use doubles to represent array sizes and indexes. In C++, th
 | `dim_vector` | Array size (dimensions)
 |========================================
 
+`octave_idx_type` is the index/one-dimensional size type for Octave arrays. A `dim_vector` is a  a list of ++octave_idx_type++s and represents the size of an array (that is, its size along each dimension).
+
+---------------------------------------
+include::src/ex05_sizes_and_indexing.cc[]
+---------------------------------------
+
+Breaking it down:
+
+---------------------------------------
+  dim_vector sz = x.dims ();
+  NDArray y (sz);
+---------------------------------------
+
+You can get the size of an existing array with `dims()` (not `size()`). And you can construct a new array of a given size by passing a `dim_vector` to its constructor.
+
+---------------------------------------
+  typedef octave_idx_type oct_idx;
+  [...]
+  for (oct_idx i = 0; i < y.numel (); i++)
+---------------------------------------
+
+I don't like typing out “`octave_idx_type`”, so I typedef it to the shorter “`oct_idx`”. This isn't standard Octave; it's just something I made up.
+
+Again, use `octave_idx_type` instead of `int` for indexing into Octave arrays.
+
+An `octave_idx_type` is an int, and probably wider than a plain `int`.
+So you can assign an `int` to an `octave_idx_type`, but you cannot safely assign an `octave_idx_type` to an `int`.
+(If you're compiling in 64-bit mode, your compiler should give you a warning if you do so.)
+
+---------------------------------------
+  octave_stdout << "Array z has " << sz2.ndims() << " dimensions and "
+      << sz2.numel() << " elements." << std::endl;
+---------------------------------------
+
+It's more convenient to use C++ style stream output than C style `printf` here, because you don't have to worry about matching the size of the format placeholders to the size of `octave_idx_type`.
+
+The weird thing about `dim_vector` is that its `ndims()` and `numel()` methods refer to the size of the array it is describing, not the `dim_vector` array itself.
+
+---------------------------------------
+  dim_vector sz2 (2, 3, 4, 5);
+  NDArray z (sz2);
+---------------------------------------
+
+You can construct a new `dim_vector` by passing it a list of sizes along each dimension.
+
+---------------------------------------
+  NDArray z2 (dim_vector (2, 3, 4, 5));
+---------------------------------------
+
+And you don't have to store that `dim_vector` in an intermediate variable.
 
 == Other Resources ==
 

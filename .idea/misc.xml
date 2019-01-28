@@ -4,6 +4,8 @@
   <component name="CidrRootsConfiguration">
     <sourceRoots>
       <file path="$PROJECT_DIR$/doc-src/src" />
+      <file path="$PROJECT_DIR$/docs-src/src" />
+      <file path="$PROJECT_DIR$/scratch" />
     </sourceRoots>
   </component>
   <component name="JavaScriptSettings">

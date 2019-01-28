@@ -459,6 +459,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_basic_arithmetic">2.1.4. Basic Arithmetic</a></li>
+<li><a href="#_array_sizes_and_indexing">2.1.5. Array Sizes and Indexing</a></li>
 </ul>
 </li>
 </ul>
@@ -486,6 +487,9 @@ That API is in C++ and makes use of templates and inheritance, so it can be diff
 The Octave manual&#8217;s <a href="https://octave.org/doc/v4.4.1/Oct_002dFiles.html">Oct-Files appendix</a> covers the oct-file interface and aspects of coding unique to it, but seems to presume a familiarity with the internal Octave API.
 I lacked that familiarity.
 This guide intends to step in for the beginner who also doesn&#8217;t know the internal Octave API, but wants to get a quick start being productive with oct-files.</p>
+</div>
+<div class="paragraph">
+<p>You can read this guide online at <a href="https://apjanke.github.io/octfiles-101" class="bare">https://apjanke.github.io/octfiles-101</a>.</p>
 </div>
 <div class="paragraph">
 <p>Please note: I am myself an oct-file novice.
@@ -959,7 +963,8 @@ DEFUN_DLD (ex04_basic_arithmetic, args, nargout,
 
   NDArray my_sum = x + y;
   NDArray my_difference = x - y;
-  NDArray my_product = x * y;  // Broken: "ambiguous overloaded operator" compiler error
+  //NDArray my_product = x * y;  // Broken: "ambiguous overloaded operator" compiler error
+  NDArray my_product (0.0);
 
   octave_value_list varargout;
   varargout(0) = my_sum;
@@ -1020,6 +1025,127 @@ Shouldn&#8217;t there be an exact-match <code>NDArray, NDArray</code> one?</p>
 <p><em>Next step: look at some oct-files in Octave Forge packages to find examples.</em></p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_array_sizes_and_indexing">2.1.5. Array Sizes and Indexing</h4>
+<div class="paragraph">
+<p>In M-code, you just use doubles to represent array sizes and indexes. In C++, there&#8217;s a few types used for this.</p>
+</div>
+<table class="tableblock frame-topbot grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">C++ Type</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>octave_idx_type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array index, subscript, or size element</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dim_vector</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array size (dimensions)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><code>octave_idx_type</code> is the index/one-dimensional size type for Octave arrays. A <code>dim_vector</code> is a  a list of <code>octave_idx_type</code>s and represents the size of an array (that is, its size along each dimension).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>#include &lt;cmath&gt;
+#include &lt;iostream&gt;
+#include &lt;octave/oct.h&gt;
+
+typedef octave_idx_type oct_idx;
+
+DEFUN_DLD (ex05_sizes_and_indexing, args, nargout,
+           "Sizes and indexing")
+{
+  NDArray x = args(0).array_value ();
+
+  dim_vector sz = x.dims ();
+  NDArray y (sz);
+  for (oct_idx i = 0; i &lt; y.numel (); i++) {
+    y(i) = x(i) + i;
+  }
+
+  dim_vector sz2 (2, 3, 4, 5);
+  NDArray z (sz2);
+  octave_stdout &lt;&lt; "Array z has " &lt;&lt; sz2.ndims() &lt;&lt; " dimensions and "
+      &lt;&lt; sz2.numel() &lt;&lt; " elements." &lt;&lt; std::endl;
+  NDArray z2 (dim_vector (2, 3, 4, 5));
+
+  octave_value_list varargout;
+  varargout(0) = y;
+  return varargout;
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Breaking it down:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  dim_vector sz = x.dims ();
+  NDArray y (sz);</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can get the size of an existing array with <code>dims()</code> (not <code>size()</code>). And you can construct a new array of a given size by passing a <code>dim_vector</code> to its constructor.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  typedef octave_idx_type oct_idx;
+  [...]
+  for (oct_idx i = 0; i &lt; y.numel (); i++)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>I don&#8217;t like typing out “<code>octave_idx_type</code>”, so I typedef it to the shorter “<code>oct_idx</code>”. This isn&#8217;t standard Octave; it&#8217;s just something I made up.</p>
+</div>
+<div class="paragraph">
+<p>Again, use <code>octave_idx_type</code> instead of <code>int</code> for indexing into Octave arrays.</p>
+</div>
+<div class="paragraph">
+<p>An <code>octave_idx_type</code> is an int, and probably wider than a plain <code>int</code>.
+So you can assign an <code>int</code> to an <code>octave_idx_type</code>, but you cannot safely assign an <code>octave_idx_type</code> to an <code>int</code>.
+(If you&#8217;re compiling in 64-bit mode, your compiler should give you a warning if you do so.)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  octave_stdout &lt;&lt; "Array z has " &lt;&lt; sz2.ndims() &lt;&lt; " dimensions and "
+      &lt;&lt; sz2.numel() &lt;&lt; " elements." &lt;&lt; std::endl;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s more convenient to use C++ style stream output than C style <code>printf</code> here, because you don&#8217;t have to worry about matching the size of the format placeholders to the size of <code>octave_idx_type</code>.</p>
+</div>
+<div class="paragraph">
+<p>The weird thing about <code>dim_vector</code> is that its <code>ndims()</code> and <code>numel()</code> methods refer to the size of the array it is describing, not the <code>dim_vector</code> array itself.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  dim_vector sz2 (2, 3, 4, 5);
+  NDArray z (sz2);</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can construct a new <code>dim_vector</code> by passing it a list of sizes along each dimension.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  NDArray z2 (dim_vector (2, 3, 4, 5));</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And you don&#8217;t have to store that <code>dim_vector</code> in an intermediate variable.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1050,7 +1176,7 @@ Tag your question with the <a href="https://stackoverflow.com/questions/tagged/o
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-01-28 17:00:42 -0500
+Last updated 2019-01-28 17:59:28 -0500
 </div>
 </div>
 </body>
