@@ -3,6 +3,7 @@ Oct-Files 101
 Andrew Janke <floss@apjanke.net>
 :Auther Initials: APJ
 :toc:
+:toclevels: 4
 :numbered:
 :website: https://github.com/apjanke/octfiles-101
 
