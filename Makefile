@@ -15,4 +15,4 @@ compile: .FORCE
 	cd docs-src/src && make compile
 
 clean:
-	rm -f docs-src/src/*.o docs-src/src/*.oct
+	rm -f docs-src/src/*.o docs-src/src/*.oct scratch/*.o scratch/*.oct
