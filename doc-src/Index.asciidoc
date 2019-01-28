@@ -232,14 +232,33 @@ endfunction
 Let's break it down:
 
 ---------------------------------------
-  error ("Need exactly 2 argins, got %d", nargin);
+  octave_idx_type nargin = args.length ();
 ---------------------------------------
 
-Calling `error()` in an oct-file behaves the same as calling `error()` in M-code: it aborts execution of the function, returning control to the interactive prompt, or an enclosing M-code `try`/`catch` block. You can pass multiple arguments to `error()`, in which case the first argument is a `printf`-style format string, and the remaining arguments are values to substitue into the format string's placeholders. This is a good thing to make use of, because it lets you include information about the actual data values that caused a problem, making it easier to debug.
+`octave_idx_type` is the type used to index into Octave arrays or represent their size.
+It's like `size_t`.
+(In fact, it probably is a `size_t`.)
 
-Note that if you pass strings in to `error()`, they must be C-style strings (`char *`s) and not C++ `std::string` objects. Any `std::string` needs to be converted to a `char *` by calling `c_str()` on it.
+---------------------------------------
+  error ("Need exactly 2 argins, got %ld", (long) nargin);
+---------------------------------------
 
-Also, the values passed in to `error()` need to be basic C++ types like `char *`, `int`, or `double`, not Octave API objects like `NDArray` or `Matrix`.
+Calling `error()` in an oct-file behaves the same as calling `error()` in M-code: it aborts execution of the function, returning control to the interactive prompt, or an enclosing M-code `try`/`catch` block.
+You can pass multiple arguments to `error()`, in which case the first argument is a `printf`-style format string, and the remaining arguments are values to substitue into the format string's placeholders.
+This is a good thing to make use of, because it lets you include information about the actual data values that caused a problem, making it easier to debug.
+
+You need to use `%ld` instead of `%d` to print out `octave_idx_type` values, because they're typically 64 bits instead of 32 bits.
+And you need to explicitly cast them to `(long)` for compatibility with Octaves that are compiled in 32-bit mode.
+
+The values passed in to `error()` need to be basic C++ types like `char *`, `int`, or `double`, not Octave API objects like `NDArray` or `Matrix`.
+
+Note that if you pass strings in to `error()`, they must be C-style strings (`char *`) and not C++ `std::string` objects.
+Any `std::string` needs to be converted to a `char *` by calling `c_str()` on it.
+
+---------------------------------------
+  std::string some_string ("foobar");
+  error ("Something bad happened. Message: %s", some_string.c_str ());
+---------------------------------------
 
 ---------------------------------------
   octave_value_list varargout;
