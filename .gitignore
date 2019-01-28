@@ -3,4 +3,5 @@
 *.swp
 ~*
 !.idea
+.idea/workspace.xml
 cmake-build-debug
