@@ -447,43 +447,46 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_setup">1.2. Setup</a></li>
 </ul>
 </li>
-<li><a href="#_writing_oct_files">2. Writing Oct-Files</a>
+<li><a href="#_the_very_basics">2. The Very Basics</a>
 <ul class="sectlevel2">
-<li><a href="#_the_very_basics">2.1. The Very Basics</a>
+<li><a href="#_hello_world">2.1. Hello, World</a></li>
+<li><a href="#_creating_some_arrays">2.2. Creating Some Arrays</a></li>
+<li><a href="#_inputs_and_error_checking">2.3. Inputs and Error Checking</a>
 <ul class="sectlevel3">
-<li><a href="#_hello_world">2.1.1. Hello, World</a></li>
-<li><a href="#_creating_some_arrays">2.1.2. Creating Some Arrays</a></li>
-<li><a href="#_inputs_and_error_checking">2.1.3. Inputs and Error Checking</a>
-<ul class="sectlevel4">
-<li><a href="#_building_error_messages_using_stdstring">Building Error Messages using <code>std::string</code></a></li>
+<li><a href="#_building_error_messages_using_stdstring">2.3.1. Building Error Messages using <code>std::string</code></a></li>
 </ul>
 </li>
-<li><a href="#_basic_arithmetic">2.1.4. Basic Arithmetic</a></li>
-<li><a href="#_array_sizes_and_indexing">2.1.5. Array Sizes and Indexing</a></li>
+<li><a href="#_basic_arithmetic">2.4. Basic Arithmetic</a></li>
+<li><a href="#_array_sizes_and_indexing">2.5. Array Sizes and Indexing</a></li>
+<li><a href="#_relational_operations">2.6. Relational Operations</a></li>
 </ul>
 </li>
-<li><a href="#_less_basic_stuff">2.2. Less Basic Stuff</a>
-<ul class="sectlevel3">
-<li><a href="#_detecting_array_types">2.2.1. Detecting Array Types</a></li>
-<li><a href="#_calling_m_functions">2.2.2. Calling M Functions</a></li>
-<li><a href="#_calling_fortran_code">2.2.3. Calling Fortran Code</a></li>
-<li><a href="#_documenting_oct_files">2.2.4. Documenting Oct-Files</a></li>
-</ul>
-</li>
-<li><a href="#_junior_varsity_level">2.3. Junior Varsity Level</a>
-<ul class="sectlevel3">
-<li><a href="#_c_templates_and_oct_functions">2.3.1. C++ Templates and Oct Functions</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#_building_oct_files">3. Building Oct-Files</a>
+<li><a href="#_less_basic_stuff">3. Less Basic Stuff</a>
 <ul class="sectlevel2">
-<li><a href="#_using_mkoctfile">3.1. Using <code>mkoctfile</code></a></li>
-<li><a href="#_organizing_projects">3.2. Organizing Projects</a></li>
+<li><a href="#_detecting_array_types">3.1. Detecting Array Types</a></li>
+<li><a href="#_calling_m_functions">3.2. Calling M Functions</a></li>
+<li><a href="#_calling_fortran_code">3.3. Calling Fortran Code</a></li>
+<li><a href="#_documenting_oct_files">3.4. Documenting Oct-Files</a></li>
 </ul>
 </li>
-<li><a href="#_other_resources">4. Other Resources</a></li>
+<li><a href="#_junior_varsity_level">4. Junior Varsity Level</a>
+<ul class="sectlevel2">
+<li><a href="#_c_templates_and_oct_functions">4.1. C++ Templates and Oct Functions</a></li>
+</ul>
+</li>
+<li><a href="#_building_oct_files">5. Building Oct-Files</a>
+<ul class="sectlevel2">
+<li><a href="#_using_mkoctfile">5.1. Using <code>mkoctfile</code></a></li>
+<li><a href="#_organizing_projects">5.2. Organizing Projects</a></li>
+</ul>
+</li>
+<li><a href="#_using_ides_with_oct_files">6. Using IDEs with Oct-Files</a>
+<ul class="sectlevel2">
+<li><a href="#_creating_clion_projects">6.1. Creating CLion Projects</a></li>
+</ul>
+</li>
+<li><a href="#_other_resources">7. Other Resources</a></li>
+<li><a href="#_open_questions">8. Open Questions</a></li>
 </ul>
 </div>
 </div>
@@ -508,7 +511,7 @@ I lacked that familiarity.
 This guide intends to step in for the beginner who also doesn&#8217;t know the internal Octave API, but wants to get a quick start being productive with oct-files.</p>
 </div>
 <div class="paragraph">
-<p>You can read this guide online at <a href="https://apjanke.github.io/octfiles-101" class="bare">https://apjanke.github.io/octfiles-101</a>.</p>
+<p>You can read this guide online at <a href="https://apjanke.github.io/octfiles-101" class="bare">https://apjanke.github.io/octfiles-101</a>. You can find its source code at <a href="https://github.com/apjanke/octfiles-101" class="bare">https://github.com/apjanke/octfiles-101</a>.</p>
 </div>
 <div class="paragraph">
 <p>Please note: I am myself an oct-file novice.
@@ -561,12 +564,10 @@ Anything that is CMake-aware will probably (maybe) work.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_writing_oct_files">2. Writing Oct-Files</h2>
+<h2 id="_the_very_basics">2. The Very Basics</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_the_very_basics">2.1. The Very Basics</h3>
-<div class="sect3">
-<h4 id="_hello_world">2.1.1. Hello, World</h4>
+<h3 id="_hello_world">2.1. Hello, World</h3>
 <div class="paragraph">
 <p>Here&#8217;s the coding classic “Hello, World” written as an oct-file:</p>
 </div>
@@ -670,8 +671,8 @@ Return values from an oct-file are encapsulated in an <code>octave_value_list</c
 <code>octave_value_list ()</code> with no arguments constructs an empty list, which is equivalent to an M-code function that returns zero argouts.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_creating_some_arrays">2.1.2. Creating Some Arrays</h4>
+<div class="sect2">
+<h3 id="_creating_some_arrays">2.2. Creating Some Arrays</h3>
 <div class="paragraph">
 <p>Let&#8217;s create some array values.</p>
 </div>
@@ -838,8 +839,8 @@ You need to convert it to an <code>octave_value</code>.
 But you can omit the <code>octave_value_list (...)</code> around your <code>octave_value (...)</code> – there is an automatic conversion from <code>octave_value</code> to an <code>octave_value_list</code>.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_inputs_and_error_checking">2.1.3. Inputs and Error Checking</h4>
+<div class="sect2">
+<h3 id="_inputs_and_error_checking">2.3. Inputs and Error Checking</h3>
 <div class="paragraph">
 <p>To do useful work, we need to accept input arguments from our caller.</p>
 </div>
@@ -957,8 +958,8 @@ I don&#8217;t know why.</p>
 <div class="paragraph">
 <p>See <a href="https://octave.org/doc/v4.0.1/Input-Parameter-Checking-in-Oct_002dFiles.html">Input Parameter Checking in Oct-Files</a> for more details.</p>
 </div>
-<div class="sect4">
-<h5 id="_building_error_messages_using_stdstring">Building Error Messages using <code>std::string</code></h5>
+<div class="sect3">
+<h4 id="_building_error_messages_using_stdstring">2.3.1. Building Error Messages using <code>std::string</code></h4>
 <div class="paragraph">
 <p>Instead of using printf-style formatting using <code>%</code> placeholders, you can construct error message strings using <code>std::string</code> concatenation.
 This can be more concise, especially when working with <code>octave_idx_type</code> values or templated types. Just don&#8217;t forget to call <code>c_str()</code> on it.</p>
@@ -971,10 +972,13 @@ This can be more concise, especially when working with <code>octave_idx_type</co
   error (msg.c_str ());</pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Note: I&#8217;m having trouble getting this to work with other types. I often get compiler errors saying stuff like <code>no viable conversion from 'octave_value' to 'std::string'</code> even when the inputs don&#8217;t look like they&#8217;re <code>octave_value</code>s.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_basic_arithmetic">2.1.4. Basic Arithmetic</h4>
+</div>
+<div class="sect2">
+<h3 id="_basic_arithmetic">2.4. Basic Arithmetic</h3>
 <div class="paragraph">
 <p>You can do array math with <code>NDArray</code> and related classes similar to how you do it in M-code.</p>
 </div>
@@ -1054,8 +1058,8 @@ Shouldn&#8217;t there be an exact-match <code>NDArray, NDArray</code> one?</p>
 <p><em>Next step: look at some oct-files in Octave Forge packages to find examples.</em></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_array_sizes_and_indexing">2.1.5. Array Sizes and Indexing</h4>
+<div class="sect2">
+<h3 id="_array_sizes_and_indexing">2.5. Array Sizes and Indexing</h3>
 <div class="paragraph">
 <p>In M-code, you just use doubles to represent array sizes and indexes. In C++, there&#8217;s a few types used for this.</p>
 </div>
@@ -1175,56 +1179,65 @@ So you can assign an <code>int</code> to an <code>octave_idx_type</code>, but yo
 <p>And you don&#8217;t have to store that <code>dim_vector</code> in an intermediate variable; you can pass a new one directly into the <code>NDArray</code> constructor.</p>
 </div>
 </div>
-</div>
 <div class="sect2">
-<h3 id="_less_basic_stuff">2.2. Less Basic Stuff</h3>
-<div class="sect3">
-<h4 id="_detecting_array_types">2.2.1. Detecting Array Types</h4>
+<h3 id="_relational_operations">2.6. Relational Operations</h3>
 <div class="paragraph">
-<p><em>TODO: Describe how to detect array types (e.g. differentiate numeric types, structs, user-defined class objects.)</em></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_calling_m_functions">2.2.2. Calling M Functions</h4>
-<div class="paragraph">
-<p><em>TODO</em></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_calling_fortran_code">2.2.3. Calling Fortran Code</h4>
-<div class="paragraph">
-<p><em>TODO</em></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_documenting_oct_files">2.2.4. Documenting Oct-Files</h4>
-<div class="paragraph">
-<p><em>TODO</em></p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_junior_varsity_level">2.3. Junior Varsity Level</h3>
-<div class="sect3">
-<h4 id="_c_templates_and_oct_functions">2.3.1. C++ Templates and Oct Functions</h4>
-<div class="paragraph">
-<p><em>TODO</em></p>
-</div>
+<p><em>TODO: Go over <code>==</code>, <code>&lt;</code>, <code>&gt;</code>, and so on. Probably sort() and unique(), too.</em></p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_building_oct_files">3. Building Oct-Files</h2>
+<h2 id="_less_basic_stuff">3. Less Basic Stuff</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_using_mkoctfile">3.1. Using <code>mkoctfile</code></h3>
+<h3 id="_detecting_array_types">3.1. Detecting Array Types</h3>
+<div class="paragraph">
+<p><em>TODO: Describe how to detect array types (e.g. differentiate numeric types, structs, user-defined class objects.)</em></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_calling_m_functions">3.2. Calling M Functions</h3>
+<div class="paragraph">
+<p><em>TODO</em></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_calling_fortran_code">3.3. Calling Fortran Code</h3>
+<div class="paragraph">
+<p><em>TODO</em></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_documenting_oct_files">3.4. Documenting Oct-Files</h3>
+<div class="paragraph">
+<p><em>TODO</em></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_junior_varsity_level">4. Junior Varsity Level</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_c_templates_and_oct_functions">4.1. C++ Templates and Oct Functions</h3>
+<div class="paragraph">
+<p><em>TODO</em></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_oct_files">5. Building Oct-Files</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_using_mkoctfile">5.1. Using <code>mkoctfile</code></h3>
 <div class="paragraph">
 <p><em>TODO: How to use <code>mkoctfile</code> (both shell command and Octave function)</em></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_organizing_projects">3.2. Organizing Projects</h3>
+<h3 id="_organizing_projects">5.2. Organizing Projects</h3>
 <div class="paragraph">
 <p><em>TODO: How to organize an Oct-file project/package</em></p>
 </div>
@@ -1232,7 +1245,24 @@ So you can assign an <code>int</code> to an <code>octave_idx_type</code>, but yo
 </div>
 </div>
 <div class="sect1">
-<h2 id="_other_resources">4. Other Resources</h2>
+<h2 id="_using_ides_with_oct_files">6. Using IDEs with Oct-Files</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><em>TODO</em></p>
+</div>
+<div class="sect2">
+<h3 id="_creating_clion_projects">6.1. Creating CLion Projects</h3>
+<div class="paragraph">
+<p><em>TODO</em></p>
+</div>
+<div class="paragraph">
+<p><em>TODO: Find a free IDE to add here.</em></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_other_resources">7. Other Resources</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="https://octave.org/doc/v4.4.1/Oct_002dFiles.html">The GNU Octave 4.4.1 Manual Oct-Files section</a> – This is the official reference on oct-files.</p>
@@ -1255,10 +1285,27 @@ Tag your question with the <a href="https://stackoverflow.com/questions/tagged/o
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_open_questions">8. Open Questions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Why can&#8217;t I do this? It results in a compiler error saying <code>no viable conversion from 'octave_value' to 'std::string'</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  octave_value x = args(0);
+
+  builtin_type_t x_type = x.builtin_type ();
+  std::string msg = std::string ("Type of arg 1 is: ") + x_type;
+  error (msg);</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-01-28 22:10:27 -0500
+Last updated 2019-01-29 10:49:08 -0500
 </div>
 </div>
 </body>

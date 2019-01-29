@@ -22,7 +22,7 @@ The Octave manual's https://octave.org/doc/v4.4.1/Oct_002dFiles.html[Oct-Files a
 I lacked that familiarity.
 This guide intends to step in for the beginner who also doesn't know the internal Octave API, but wants to get a quick start being productive with oct-files.
 
-You can read this guide online at https://apjanke.github.io/octfiles-101.
+You can read this guide online at https://apjanke.github.io/octfiles-101. You can find its source code at https://github.com/apjanke/octfiles-101.
 
 Please note: I am myself an oct-file novice.
 I'm writing this document as I learn.
@@ -57,11 +57,9 @@ There's no free “community” edition of CLion, so if you don't have a license
 I'm not very experienced with C++ IDEs, so I can't recommend one.
 Anything that is CMake-aware will probably (maybe) work.
 
-== Writing Oct-Files ==
+== The Very Basics ==
 
-=== The Very Basics ===
-
-==== Hello, World ====
+=== Hello, World ===
 
 Here's the coding classic “Hello, World” written as an oct-file:
 
@@ -138,7 +136,7 @@ Your C\++ oct-file main function always has to return something, even if at the 
 Return values from an oct-file are encapsulated in an `octave_value_list` object, which is the C++ equivalent of a comma-separated list in M-code.
 `octave_value_list ()` with no arguments constructs an empty list, which is equivalent to an M-code function that returns zero argouts.
 
-==== Creating Some Arrays ====
+=== Creating Some Arrays ===
 
 Let's create some array values.
 
@@ -230,7 +228,7 @@ You need to convert it to an `octave_value`.
 But you can omit the `octave_value_list (...)` around your `octave_value (...)` – there is an automatic conversion from `octave_value` to an `octave_value_list`.
 
 
-==== Inputs and Error Checking ====
+=== Inputs and Error Checking ===
 
 To do useful work, we need to accept input arguments from our caller.
 
@@ -307,7 +305,7 @@ I don't know why.
 
 See https://octave.org/doc/v4.0.1/Input-Parameter-Checking-in-Oct_002dFiles.html[Input Parameter Checking in Oct-Files] for more details.
 
-===== Building Error Messages using +std::string+ =====
+==== Building Error Messages using +std::string+ ====
 
 Instead of using printf-style formatting using `%` placeholders, you can construct error message strings using `std::string` concatenation.
 This can be more concise, especially when working with `octave_idx_type` values or templated types. Just don't forget to call `c_str()` on it.
@@ -319,7 +317,9 @@ This can be more concise, especially when working with `octave_idx_type` values 
   error (msg.c_str ());
 ---------------------------------------
 
-==== Basic Arithmetic ====
+Note: I'm having trouble getting this to work with other types. I often get compiler errors saying stuff like `no viable conversion from 'octave_value' to 'std::string'` even when the inputs don't look like they're ++octave_value++s.
+
+=== Basic Arithmetic ===
 
 You can do array math with `NDArray` and related classes similar to how you do it in M-code.
 
@@ -370,7 +370,7 @@ Shouldn't there be an exact-match `NDArray, NDArray` one?
 
 _Next step: look at some oct-files in Octave Forge packages to find examples._
 
-==== Array Sizes and Indexing ====
+=== Array Sizes and Indexing ===
 
 In M-code, you just use doubles to represent array sizes and indexes. In C++, there's a few types used for this.
 
@@ -432,31 +432,31 @@ You can construct a new `dim_vector` by passing it a list of sizes along each di
 
 And you don't have to store that `dim_vector` in an intermediate variable; you can pass a new one directly into the `NDArray` constructor.
 
-==== Relational Operations ====
+=== Relational Operations ===
 
 _TODO: Go over `==`, `<`, `>`, and so on. Probably sort() and unique(), too._
 
-=== Less Basic Stuff ===
+== Less Basic Stuff ==
 
-==== Detecting Array Types ====
+=== Detecting Array Types ===
 
 _TODO: Describe how to detect array types (e.g. differentiate numeric types, structs, user-defined class objects.)_
 
-==== Calling M Functions ====
+=== Calling M Functions ===
 
 _TODO_
 
-==== Calling Fortran Code ====
+=== Calling Fortran Code ===
 
 _TODO_
 
-==== Documenting Oct-Files ====
+=== Documenting Oct-Files ===
 
 _TODO_
 
-=== Junior Varsity Level ===
+== Junior Varsity Level ==
 
-==== C++ Templates and Oct Functions ====
+=== C++ Templates and Oct Functions ===
 
 _TODO_
 
@@ -469,6 +469,16 @@ _TODO: How to use `mkoctfile` (both shell command and Octave function)_
 === Organizing Projects ===
 
 _TODO: How to organize an Oct-file project/package_
+
+== Using IDEs with Oct-Files ==
+
+_TODO_
+
+=== Creating CLion Projects ===
+
+_TODO_
+
+_TODO: Find a free IDE to add here._
 
 == Other Resources ==
 
@@ -485,3 +495,15 @@ The relevant definitions are in the `*.h` header files in `liboctave/` and `libi
 
 https://stackoverflow.com[StackOverflow] is the web's premiere Q&A site for programmers.
 Tag your question with the https://stackoverflow.com/questions/tagged/octave[“octave” tag].
+
+== Open Questions ==
+
+Why can't I do this? It results in a compiler error saying `no viable conversion from 'octave_value' to 'std::string'`.
+
+-----------------------------------
+  octave_value x = args(0);
+
+  builtin_type_t x_type = x.builtin_type ();
+  std::string msg = std::string ("Type of arg 1 is: ") + x_type;
+  error (msg);
+-----------------------------------
