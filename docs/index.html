@@ -996,8 +996,8 @@ DEFUN_DLD (ex04_basic_arithmetic, args, nargout,
 
   NDArray my_sum = x + y;
   NDArray my_difference = x - y;
-  //NDArray my_product = x * y;  // Broken: "ambiguous overloaded operator" compiler error
-  NDArray my_product (0.0);
+  // Must use product(), not x * y, for NDArrays
+  NDArray my_product = product (x, y);
 
   octave_value_list varargout;
   varargout(0) = my_sum;
@@ -1014,45 +1014,15 @@ DEFUN_DLD (ex04_basic_arithmetic, args, nargout,
 <div class="content">
 <pre>  NDArray my_sum = x + y;
   NDArray my_difference = x - y;
-  NDArray my_product = x * y; // Broken: "ambiguous overloaded operator" compiler error</pre>
+  // Must use product(), not x * y, for NDArrays
+  NDArray my_product = product (x, y);</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>NDArray</code> class defines arithmetic operators like <code>+</code>, <code>-</code>, and so on.</p>
+<p>The <code>NDArray</code> class defines arithmetic operators like <code>+</code>, <code>-</code>, and so on. <code>*</code> is not defined for <code>NDArray</code>, though; you have to use <code>product()</code> instead.</p>
 </div>
 <div class="paragraph">
-<p>And here&#8217;s where I&#8217;m stuck.
-I don&#8217;t know why <code>x * y</code> fails to compile.
-The error I get is:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>ex04_basic_arithmetic.cc:13:26: error: use of overloaded operator '*' is ambiguous (with operand
-      types 'NDArray' and 'NDArray')
-  NDArray my_product = x * y;  // Broken: "ambiguous" compiler error
-                       ~ ^ ~
-/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-nda-i8.h:9:1: note: candidate
-      function
-NDS_BIN_OP_DECLS (int8NDArray, NDArray, octave_int8, OCTAVE_API)
-^
-/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-op-decl.h:161:19: note: expanded
-      from macro 'NDS_BIN_OP_DECLS'
-  BIN_OP_DECL (R, operator *, ND, S, API);      \
-                  ^
-/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-i8-nda.h:9:1: note: candidate
-      function
-SND_BIN_OP_DECLS (int8NDArray, octave_int8, NDArray, OCTAVE_API)
-^
-/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-op-decl.h:188:19: note: expanded
-      from macro 'SND_BIN_OP_DECLS'
-  BIN_OP_DECL (R, operator *, S, ND, API);      \
-                  ^
-[...]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>I don&#8217;t know why it&#8217;s finding so many matches.
-Shouldn&#8217;t there be an exact-match <code>NDArray, NDArray</code> one?</p>
+<p>See <a href="http://wiki.octave.org/Tips_and_tricks#C.2B.2B">Tips and Tricks on the Octave wiki</a> for a table of C++ operations that correspond to common M-code arithmetic operations.</p>
 </div>
 <div class="paragraph">
 <p><em>Next step: look at some oct-files in Octave Forge packages to find examples.</em></p>
@@ -1422,7 +1392,7 @@ Tag your question with the <a href="https://stackoverflow.com/questions/tagged/o
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-01-29 11:46:23 -0500
+Last updated 2019-01-29 11:52:01 -0500
 </div>
 </div>
 </body>

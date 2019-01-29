@@ -332,41 +332,13 @@ Let's break it down.
 ---------------------------------------
   NDArray my_sum = x + y;
   NDArray my_difference = x - y;
-  NDArray my_product = x * y; // Broken: "ambiguous overloaded operator" compiler error
+  // Must use product(), not x * y, for NDArrays
+  NDArray my_product = product (x, y);
 ---------------------------------------
 
-The `NDArray` class defines arithmetic operators like `+`, `-`, and so on.
+The `NDArray` class defines arithmetic operators like `+`, `-`, and so on. `*` is not defined for `NDArray`, though; you have to use `product()` instead.
 
-And here's where I'm stuck.
-I don't know why `x * y` fails to compile.
-The error I get is:
-
----------------------------------------
-ex04_basic_arithmetic.cc:13:26: error: use of overloaded operator '*' is ambiguous (with operand
-      types 'NDArray' and 'NDArray')
-  NDArray my_product = x * y;  // Broken: "ambiguous" compiler error
-                       ~ ^ ~
-/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-nda-i8.h:9:1: note: candidate
-      function
-NDS_BIN_OP_DECLS (int8NDArray, NDArray, octave_int8, OCTAVE_API)
-^
-/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-op-decl.h:161:19: note: expanded
-      from macro 'NDS_BIN_OP_DECLS'
-  BIN_OP_DECL (R, operator *, ND, S, API);      \
-                  ^
-/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-i8-nda.h:9:1: note: candidate
-      function
-SND_BIN_OP_DECLS (int8NDArray, octave_int8, NDArray, OCTAVE_API)
-^
-/usr/local/Cellar/octave/4.4.1_5/include/octave-4.4.1/octave/mx-op-decl.h:188:19: note: expanded
-      from macro 'SND_BIN_OP_DECLS'
-  BIN_OP_DECL (R, operator *, S, ND, API);      \
-                  ^
-[...]
----------------------------------------
-
-I don't know why it's finding so many matches.
-Shouldn't there be an exact-match `NDArray, NDArray` one?
+See http://wiki.octave.org/Tips_and_tricks#C.2B.2B[Tips and Tricks on the Octave wiki] for a table of C++ operations that correspond to common M-code arithmetic operations.
 
 _Next step: look at some oct-files in Octave Forge packages to find examples._
 
