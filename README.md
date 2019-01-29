@@ -8,6 +8,9 @@ Oct-files are Octave extensions written in C++ that let you get performance or c
 
 You can read the guide online at https://apjanke.github.io/octfiles-101/.
 
+Don't read the guide just by clicking on page links here in the GitHub repo view!
+Some stuff won't work correctly and you won't be able to see things like the code examples.
+
 # About this project
 
 This is just something I threw together after I had to do a bit of oct-file
