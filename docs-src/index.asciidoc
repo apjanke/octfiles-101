@@ -493,6 +493,8 @@ https://octave.org/doc/v4.4.1/Oct_002dFiles.html[The GNU Octave 4.4.1 Manual Oct
 https://octave.sourceforge.io/coda/index.html[Da Coda Al Fine - Pushing Octave's Limits] – An older 2004 document on advanced Octave programming.
 Contains a section on oct-files.
 
+http://wiki.octave.org/Tips_and_tricks#C.2B.2B[Tips and Tricks on the Octave Wiki] has some info on what C++ liboctave operations correspond to common M-code operations.
+
 The `#octave` channel on https://freenode.net/[freenode IRC] is often populated with Octave hackers, including Octave's core developers.
 You can ask oct-file questions there.
 
