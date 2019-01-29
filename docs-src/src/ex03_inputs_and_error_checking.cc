@@ -15,8 +15,5 @@ DEFUN_DLD (ex03_inputs_and_error_checking, args, nargout,
     warning ("");
   }
 
-  octave_value_list varargout;
-  varargout(0) = y;
-  varargout(1) = x;
-  return varargout;
+  return ovl (y, x);
 }

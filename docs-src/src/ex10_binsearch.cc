@@ -105,5 +105,5 @@ DEFUN_DLD (ex10_binsearch, args, nargout,
     out(i) = indexes[i];
   }
   delete [] indexes;
-  return octave_value (out);
+  return ovl (out);
 }

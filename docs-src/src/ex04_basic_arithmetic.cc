@@ -13,9 +13,5 @@ DEFUN_DLD (ex04_basic_arithmetic, args, nargout,
   // Must use product(), not x * y, for NDArrays
   NDArray my_product = product (x, y);
 
-  octave_value_list varargout;
-  varargout(0) = my_sum;
-  varargout(1) = my_difference;
-  varargout(2) = my_product;
-  return varargout;
+  return ovl (my_sum, my_difference, my_product);
 }

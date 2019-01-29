@@ -187,6 +187,8 @@ You need this to get access to the `NAN` constant.
   NDArray x (42.0);
 ---------------------------------------
 
+_TODO: This section about creating NDArrays from doubles is wrong! The input conversions don't work the way I thought. They're actually getting converted to characters or something._
+
 An `NDArray` is an n-dimensional Octave `double` array. `NDArray <name> (<x>)`, where `<x>` is a C++ `double` value, creates a scalar (1-by-1) Octave `double` array and initializes it with the value you pass in.
 
 In Octave, every numeric literal is a `double`, whether you write it as `42` or `42.0`.
@@ -292,6 +294,12 @@ You use `array_value()` and related conversion functions to convert them into th
 The oct function's outputs are always returned as an `octave_value_list`, which corresponds to a comma-separated list in M-code.
 
 ---------------------------------------
+  return ovl (y, x);
+---------------------------------------
+
+The `ovl()` function is a convenience function that is basically shorthand for calling the `octave_value_list (...)` constructor with the same input arguments, plus it supplies some additional conversion behavior. So `ovy (y, x)` is effectively shorthand for the following:
+
+---------------------------------------
   octave_value_list varargout;
   varargout(0) = y;
   varargout(1) = x;
@@ -300,7 +308,7 @@ The oct function's outputs are always returned as an `octave_value_list`, which 
 
 You can assign into an `octave_value_list` using `()`-indexing, like you can with an `Array`, but the right-hand-side values must themselves be ++octave_value++s or compatible types.
 
-You can't just say `return octave_value_list (my_diff, my_product)`.
+You can't just say `return octave_value_list (y, x)` when `y` and `x` are ++NDArray++s.
 I don't know why.
 
 See https://octave.org/doc/v4.0.1/Input-Parameter-Checking-in-Oct_002dFiles.html[Input Parameter Checking in Oct-Files] for more details.
@@ -477,6 +485,12 @@ https://stackoverflow.com[StackOverflow] is the web's premiere Q&A site for prog
 Tag your question with the https://stackoverflow.com/questions/tagged/octave[“octave” tag].
 
 == Open Questions ==
+
+=== Constructing ++NDArray++s from doubles ===
+
+`NDArray x (42.0)` succeeds but doesn't produce the results I expect. Figure this out.
+
+=== Error String Construction and `octave_value` Types ===
 
 Why can't I do this? It results in a compiler error saying `no viable conversion from 'octave_value' to 'std::string'`.
 

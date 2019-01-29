@@ -486,7 +486,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_other_resources">6. Other Resources</a></li>
-<li><a href="#_open_questions">7. Open Questions</a></li>
+<li><a href="#_open_questions">7. Open Questions</a>
+<ul class="sectlevel2">
+<li><a href="#_constructing_ndarrays_from_doubles">7.1. Constructing <code>NDArray</code>s from doubles</a></li>
+<li><a href="#_error_string_construction_and_octave_value_types">7.2. Error String Construction and <code>octave_value</code> Types</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -790,6 +795,9 @@ You need this to get access to the <code>NAN</code> constant.</p>
 </div>
 </div>
 <div class="paragraph">
+<p><em>TODO: This section about creating NDArrays from doubles is wrong! The input conversions don&#8217;t work the way I thought. They&#8217;re actually getting converted to characters or something.</em></p>
+</div>
+<div class="paragraph">
 <p>An <code>NDArray</code> is an n-dimensional Octave <code>double</code> array. <code>NDArray &lt;name&gt; (&lt;x&gt;)</code>, where <code>&lt;x&gt;</code> is a C++ <code>double</code> value, creates a scalar (1-by-1) Octave <code>double</code> array and initializes it with the value you pass in.</p>
 </div>
 <div class="paragraph">
@@ -863,10 +871,7 @@ DEFUN_DLD (ex03_inputs_and_error_checking, args, nargout,
     warning ("");
   }
 
-  octave_value_list varargout;
-  varargout(0) = y;
-  varargout(1) = x;
-  return varargout;
+  return ovl (y, x);
 }</pre>
 </div>
 </div>
@@ -942,6 +947,14 @@ You use <code>array_value()</code> and related conversion functions to convert t
 </div>
 <div class="listingblock">
 <div class="content">
+<pre>  return ovl (y, x);</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>ovl()</code> function is a convenience function that is basically shorthand for calling the <code>octave_value_list (...)</code> constructor with the same input arguments, plus it supplies some additional conversion behavior. So <code>ovy (y, x)</code> is effectively shorthand for the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
 <pre>  octave_value_list varargout;
   varargout(0) = y;
   varargout(1) = x;
@@ -952,7 +965,7 @@ You use <code>array_value()</code> and related conversion functions to convert t
 <p>You can assign into an <code>octave_value_list</code> using <code>()</code>-indexing, like you can with an <code>Array</code>, but the right-hand-side values must themselves be <code>octave_value</code>s or compatible types.</p>
 </div>
 <div class="paragraph">
-<p>You can&#8217;t just say <code>return octave_value_list (my_diff, my_product)</code>.
+<p>You can&#8217;t just say <code>return octave_value_list (y, x)</code> when <code>y</code> and <code>x</code> are <code>NDArray</code>s.
 I don&#8217;t know why.</p>
 </div>
 <div class="paragraph">
@@ -999,11 +1012,7 @@ DEFUN_DLD (ex04_basic_arithmetic, args, nargout,
   // Must use product(), not x * y, for NDArrays
   NDArray my_product = product (x, y);
 
-  octave_value_list varargout;
-  varargout(0) = my_sum;
-  varargout(1) = my_difference;
-  varargout(2) = my_product;
-  return varargout;
+  return ovl (my_sum, my_difference, my_product);
 }</pre>
 </div>
 </div>
@@ -1083,9 +1092,7 @@ DEFUN_DLD (ex05_sizes_and_indexing, args, nargout,
       &lt;&lt; sz2.numel() &lt;&lt; " elements." &lt;&lt; std::endl;
   NDArray z2 (dim_vector (2, 3, 4, 5));
 
-  octave_value_list varargout;
-  varargout(0) = y;
-  return varargout;
+  return ovl (y);
 }</pre>
 </div>
 </div>
@@ -1303,7 +1310,7 @@ DEFUN_DLD (ex10_binsearch, args, nargout,
     out(i) = indexes[i];
   }
   delete [] indexes;
-  return octave_value (out);
+  return ovl (out);
 }</pre>
 </div>
 </div>
@@ -1375,6 +1382,14 @@ Tag your question with the <a href="https://stackoverflow.com/questions/tagged/o
 <div class="sect1">
 <h2 id="_open_questions">7. Open Questions</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_constructing_ndarrays_from_doubles">7.1. Constructing <code>NDArray</code>s from doubles</h3>
+<div class="paragraph">
+<p><code>NDArray x (42.0)</code> succeeds but doesn&#8217;t produce the results I expect. Figure this out.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_error_string_construction_and_octave_value_types">7.2. Error String Construction and <code>octave_value</code> Types</h3>
 <div class="paragraph">
 <p>Why can&#8217;t I do this? It results in a compiler error saying <code>no viable conversion from 'octave_value' to 'std::string'</code>.</p>
 </div>
@@ -1390,9 +1405,10 @@ Tag your question with the <a href="https://stackoverflow.com/questions/tagged/o
 </div>
 </div>
 </div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-01-29 11:52:01 -0500
+Last updated 2019-01-29 18:24:10 -0500
 </div>
 </div>
 </body>

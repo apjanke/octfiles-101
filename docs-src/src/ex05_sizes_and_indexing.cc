@@ -21,7 +21,5 @@ DEFUN_DLD (ex05_sizes_and_indexing, args, nargout,
       << sz2.numel() << " elements." << std::endl;
   NDArray z2 (dim_vector (2, 3, 4, 5));
 
-  octave_value_list varargout;
-  varargout(0) = y;
-  return varargout;
+  return ovl (y);
 }
