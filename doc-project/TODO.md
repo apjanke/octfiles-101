@@ -23,11 +23,10 @@ Octfiles 101 TODO
 
 * Find examples of Octave Forge packages that use Oct-Files and use them as reference.
 * Why does `NDArray * NDArray` fail to compile?
-* Find out how to do `warning()` from an oct-file and include in Input Checking section.
 
 * Check out [this O'Reilly Octave book](https://www.oreilly.com/library/view/gnu-octave/9781849513326/). I should have a Safari subscription through my ACM or IEE Computer memberships.
 
 ### Longer Term Stuff
 
-* See if Matlab/Octave syntax highlighting can be enabled in Markdown code snippets?
+* See if Matlab/Octave syntax highlighting can be enabled in Asciidoc code snippets?
   * The highlight.js page includes Matlab in the [“scientific” section](https://highlightjs.org/static/demo/).
