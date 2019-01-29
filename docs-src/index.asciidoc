@@ -458,7 +458,13 @@ _TODO_
 
 === C++ Templates and Oct Functions ===
 
-_TODO_
+Let's go crazy. Here's binary search as an oct-file.
+
+-----------------------------------
+include::src/ex10_binsearch.cc[]
+-----------------------------------
+
+_TODO: Explain this._
 
 == Building Oct-Files ==
 
