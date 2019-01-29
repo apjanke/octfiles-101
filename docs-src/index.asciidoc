@@ -476,11 +476,11 @@ _TODO: How to use `mkoctfile` (both shell command and Octave function)_
 
 _TODO: How to organize an Oct-file project/package_
 
-== Using IDEs with Oct-Files ==
+=== Using IDEs with Oct-Files ===
 
 _TODO_
 
-=== Creating CLion Projects ===
+==== Creating CLion Projects ====
 
 _TODO_
 
