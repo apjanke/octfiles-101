@@ -1,7 +1,7 @@
 Oct-Files 101
 =============
 Andrew Janke <floss@apjanke.net>
-:Auther Initials: APJ
+:Author Initials: APJ
 :toc:
 :toclevels: 4
 :numbered:
