@@ -368,7 +368,6 @@ SND_BIN_OP_DECLS (int8NDArray, octave_int8, NDArray, OCTAVE_API)
 I don't know why it's finding so many matches.
 Shouldn't there be an exact-match `NDArray, NDArray` one?
 
-
 _Next step: look at some oct-files in Octave Forge packages to find examples._
 
 ==== Array Sizes and Indexing ====
@@ -432,6 +431,10 @@ You can construct a new `dim_vector` by passing it a list of sizes along each di
 ---------------------------------------
 
 And you don't have to store that `dim_vector` in an intermediate variable; you can pass a new one directly into the `NDArray` constructor.
+
+==== Relational Operations ====
+
+_TODO: Go over `==`, `<`, `>`, and so on. Probably sort() and unique(), too._
 
 === Less Basic Stuff ===
 

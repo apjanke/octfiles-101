@@ -7,5 +7,5 @@ include_directories(src)
 include_directories(/usr/local/include/octave-4.4.1)
 
 add_executable(octfiles_101
-        src/ex01_hello_world.cc
+        docs-src/src/ex01_hello_world.cc
         )
