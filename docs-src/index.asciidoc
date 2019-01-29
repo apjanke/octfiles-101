@@ -32,6 +32,9 @@ You can also contact me at <floss@apjanke.net>.
 
 This guide was written and tested with Octave 4.4, primarily on macOS, but it should apply to other versions and OSes as well.
 
+This is a work in progress, and its structure is in flux.
+Links to particular sections are likely to break in the future.
+
 === Terminology ===
 
 This document uses the following terms, which may or may not be offical Octave-speak:
@@ -47,7 +50,7 @@ oct function::
 The Octave internal API isn't heavily documented, so you're probably going to end up digging around in its header files for type definitions.
 This is a _lot_ easier when using an IDE that can follow identifier references for you.
 
-This project uses CLion.
+This project uses https://www.jetbrains.com/clion/[CLion].
 If you want to “play along” and see all the example files in CLion, just clone the https://github.com/apjanke/octfiles-101[repo] and open it as a CLion project.
 
 There's no free “community” edition of CLion, so if you don't have a license, you'll need to pick a different C\++ IDE.
@@ -146,9 +149,9 @@ Here are the basic ones:
 
 [frame="topbot",options="header"]
 |========================================
-| C++ Type | Meaning | M-code Equivalent 
-| `octave_value` | A single Octave array | Any variable 
-| `octave_value_list` | A list of Octave arrays | A comma-separated list 
+| C++ Type | Meaning | M-code Equivalent
+| `octave_value` | A single Octave array | Any variable
+| `octave_value_list` | A list of Octave arrays | A comma-separated list
 | `Array` | An N-dimensional array of any type | Any variable
 | `MArray` | An N-dimensional array that has math operations | Any numeric array
 | `Matrix` | A 2-dimensional `double` array | `double`
@@ -374,7 +377,7 @@ In M-code, you just use doubles to represent array sizes and indexes. In C++, th
 
 [frame="topbot",options="header"]
 |========================================
-| C++ Type | Meaning 
+| C++ Type | Meaning
 | `octave_idx_type` | Array index, subscript, or size element
 | `dim_vector` | Array size (dimensions)
 |========================================
@@ -428,7 +431,41 @@ You can construct a new `dim_vector` by passing it a list of sizes along each di
   NDArray z2 (dim_vector (2, 3, 4, 5));
 ---------------------------------------
 
-And you don't have to store that `dim_vector` in an intermediate variable.
+And you don't have to store that `dim_vector` in an intermediate variable; you can pass a new one directly into the `NDArray` constructor.
+
+=== Less Basic Stuff ===
+
+==== Detecting Array Types ====
+
+_TODO: Describe how to detect array types (e.g. differentiate numeric types, structs, user-defined class objects.)_
+
+==== Calling M Functions ====
+
+_TODO_
+
+==== Calling Fortran Code ====
+
+_TODO_
+
+==== Documenting Oct-Files ====
+
+_TODO_
+
+=== Junior Varsity Level ===
+
+==== C++ Templates and Oct Functions ====
+
+_TODO_
+
+== Building Oct-Files ==
+
+=== Using `mkoctfile` ===
+
+_TODO: How to use `mkoctfile` (both shell command and Octave function)_
+
+=== Organizing Projects ===
+
+_TODO: How to organize an Oct-file project/package_
 
 == Other Resources ==
 

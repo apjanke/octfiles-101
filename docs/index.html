@@ -462,9 +462,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_array_sizes_and_indexing">2.1.5. Array Sizes and Indexing</a></li>
 </ul>
 </li>
+<li><a href="#_less_basic_stuff">2.2. Less Basic Stuff</a>
+<ul class="sectlevel3">
+<li><a href="#_detecting_array_types">2.2.1. Detecting Array Types</a></li>
+<li><a href="#_calling_m_functions">2.2.2. Calling M Functions</a></li>
+<li><a href="#_calling_fortran_code">2.2.3. Calling Fortran Code</a></li>
+<li><a href="#_documenting_oct_files">2.2.4. Documenting Oct-Files</a></li>
 </ul>
 </li>
-<li><a href="#_other_resources">3. Other Resources</a></li>
+<li><a href="#_junior_varsity_level">2.3. Junior Varsity Level</a>
+<ul class="sectlevel3">
+<li><a href="#_c_templates_and_oct_functions">2.3.1. C++ Templates and Oct Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_building_oct_files">3. Building Oct-Files</a>
+<ul class="sectlevel2">
+<li><a href="#_using_mkoctfile">3.1. Using <code>mkoctfile</code></a></li>
+<li><a href="#_organizing_projects">3.2. Organizing Projects</a></li>
+</ul>
+</li>
+<li><a href="#_other_resources">4. Other Resources</a></li>
 </ul>
 </div>
 </div>
@@ -501,6 +520,10 @@ You can also contact me at &lt;<a href="mailto:floss@apjanke.net">floss@apjanke.
 <div class="paragraph">
 <p>This guide was written and tested with Octave 4.4, primarily on macOS, but it should apply to other versions and OSes as well.</p>
 </div>
+<div class="paragraph">
+<p>This is a work in progress, and its structure is in flux.
+Links to particular sections are likely to break in the future.</p>
+</div>
 <div class="sect2">
 <h3 id="_terminology">1.1. Terminology</h3>
 <div class="paragraph">
@@ -526,7 +549,7 @@ You can also contact me at &lt;<a href="mailto:floss@apjanke.net">floss@apjanke.
 This is a <em>lot</em> easier when using an IDE that can follow identifier references for you.</p>
 </div>
 <div class="paragraph">
-<p>This project uses CLion.
+<p>This project uses <a href="https://www.jetbrains.com/clion/">CLion</a>.
 If you want to “play along” and see all the example files in CLion, just clone the <a href="https://github.com/apjanke/octfiles-101">repo</a> and open it as a CLion project.</p>
 </div>
 <div class="paragraph">
@@ -892,6 +915,12 @@ And you need to explicitly cast them to <code>(long)</code> for compatibility wi
 <p>Note that if you pass strings in to <code>error()</code>, they must be C-style strings (<code>char *</code>) and not C++ <code>std::string</code> objects.
 Any <code>std::string</code> needs to be converted to a <code>char *</code> by calling <code>c_str()</code> on it.</p>
 </div>
+<div class="paragraph">
+<p>As in M-code, <code>warning()</code> works the same way as <code>error()</code>, accepting <code>printf</code>-style arguments.</p>
+</div>
+<div class="paragraph">
+<p>If you want to include an error or warning identifier, you can&#8217;t just include the ID as an extra first argument like in M-code. You need to call the <code>error_with_id</code> or <code>warning_with_id</code> variants instead.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre>  std::string some_string ("foobar");
@@ -1143,14 +1172,67 @@ So you can assign an <code>int</code> to an <code>octave_idx_type</code>, but yo
 </div>
 </div>
 <div class="paragraph">
-<p>And you don&#8217;t have to store that <code>dim_vector</code> in an intermediate variable.</p>
+<p>And you don&#8217;t have to store that <code>dim_vector</code> in an intermediate variable; you can pass a new one directly into the <code>NDArray</code> constructor.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_less_basic_stuff">2.2. Less Basic Stuff</h3>
+<div class="sect3">
+<h4 id="_detecting_array_types">2.2.1. Detecting Array Types</h4>
+<div class="paragraph">
+<p><em>TODO: Describe how to detect array types (e.g. differentiate numeric types, structs, user-defined class objects.)</em></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_calling_m_functions">2.2.2. Calling M Functions</h4>
+<div class="paragraph">
+<p><em>TODO</em></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_calling_fortran_code">2.2.3. Calling Fortran Code</h4>
+<div class="paragraph">
+<p><em>TODO</em></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_documenting_oct_files">2.2.4. Documenting Oct-Files</h4>
+<div class="paragraph">
+<p><em>TODO</em></p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_junior_varsity_level">2.3. Junior Varsity Level</h3>
+<div class="sect3">
+<h4 id="_c_templates_and_oct_functions">2.3.1. C++ Templates and Oct Functions</h4>
+<div class="paragraph">
+<p><em>TODO</em></p>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_other_resources">3. Other Resources</h2>
+<h2 id="_building_oct_files">3. Building Oct-Files</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_using_mkoctfile">3.1. Using <code>mkoctfile</code></h3>
+<div class="paragraph">
+<p><em>TODO: How to use <code>mkoctfile</code> (both shell command and Octave function)</em></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_organizing_projects">3.2. Organizing Projects</h3>
+<div class="paragraph">
+<p><em>TODO: How to organize an Oct-file project/package</em></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_other_resources">4. Other Resources</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="https://octave.org/doc/v4.4.1/Oct_002dFiles.html">The GNU Octave 4.4.1 Manual Oct-Files section</a> – This is the official reference on oct-files.</p>
@@ -1176,7 +1258,7 @@ Tag your question with the <a href="https://stackoverflow.com/questions/tagged/o
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-01-28 17:59:28 -0500
+Last updated 2019-01-28 22:10:27 -0500
 </div>
 </div>
 </body>
