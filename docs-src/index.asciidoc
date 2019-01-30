@@ -370,13 +370,22 @@ _Next step: look at some oct-files in Octave Forge packages to find examples._
 In M-code, you just use doubles to represent array sizes and indexes. In C++, there's a few types used for this.
 
 [frame="topbot",options="header"]
-|========================================
+|==============================================================
 | C++ Type | Meaning
 | `octave_idx_type` | Array index, subscript, or size element
 | `dim_vector` | Array size (dimensions)
-|========================================
+| `idx_vector` | `()` or `{}` indexing/subscripting expression argument
+|==============================================================
 
-`octave_idx_type` is the index/one-dimensional size type for Octave arrays. A `dim_vector` is a  a list of ++octave_idx_type++s and represents the size of an array (that is, its size along each dimension).
+`octave_idx_type` is the index/one-dimensional size type for Octave arrays.
+A `dim_vector` is a  a list of ++octave_idx_type++s and represents the size of an array (that is, its size along each dimension).
+
+An `idx_vector` is a more sophisticated type: it holds the argument to a `()` or `{}` indexing expression (from M-code).
+The contents of an `idx_vector` can be a scalar, a range, an index vector, or a magic colon, and the index values may be numeric or logical.
+
+In a multi-subscript M-code indexing expression (like “`x(1:3, 2:6, :)`”), an `idx_vector` represents just one of the comma-separated subscript expressions.
+The whole subscripting expression is represented in C++ by an `Array<idx_vector>`.
+_TODO: Verify that I've got that right._
 
 ---------------------------------------
 include::src/ex05_sizes_and_indexing.cc[]
@@ -431,12 +440,18 @@ The weird thing about `dim_vector` is that its `ndims()` and `numel()` methods r
 ---------------------------------------
 
 You can construct a new `dim_vector` by passing it a list of sizes along each dimension.
+And you don't have to store that `dim_vector` in an intermediate variable; you can pass a new one directly into the `NDArray` constructor.
+Plus, the `dim_vector` constructor can take an initializer list, so you can just pass a `{...}` list in to arguments that are expecting a `dim_vector`.
+So the following two statements are equivalent to using that `sz2` `dim_vector`:
 
 ---------------------------------------
   NDArray z2 (dim_vector (2, 3, 4, 5));
+  NDArray z3 ({2, 3, 4, 5});
 ---------------------------------------
 
-And you don't have to store that `dim_vector` in an intermediate variable; you can pass a new one directly into the `NDArray` constructor.
+Then, to index into arrays, use `idx_vector` objects.
+
+_TODO: Figure out how to use the `idx_vector`  constructors and write about them here._
 
 === Relational Operations ===
 
