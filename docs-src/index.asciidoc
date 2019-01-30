@@ -479,11 +479,17 @@ _TODO_
 
 === C++ Templates and Oct Functions ===
 
-Let's go crazy. Here's binary search as an oct-file.
+Let's go crazy. Here's binary search as an oct-file:
 
 -----------------------------------
 include::src/ex10_binsearch.cc[]
 -----------------------------------
+
+****************************
+*Note:* This `builtin_type()` stuff is not how you're supposed to do it!
+You should use `type_name()` or `class_name()` instead.
+_TODO: Update this code to do so._
+****************************
 
 _TODO: Explain this._
 
@@ -499,11 +505,67 @@ _TODO: How to organize an Oct-file project/package_
 
 === Using IDEs with Oct-Files ===
 
-_TODO_
+Dealing with oct-files and exploring the Octave internal API is a lot easier in a C\++ IDE than in a plain editor or Octave itself.
+You can edit C++ files in the Octave GUI, but it's not designed for that.
+I like https://www.jetbrains.com/clion/[CLion], a commercial IDE from JetBrains.
+
+_TODO: More stuff._
 
 ==== Creating CLion Projects ====
 
-_TODO_
+Let's assume you have your M-file and oct-file code in a SCM workspace like a Git or Mercurial repo.
+
+Create a new CLion project by clicking on "Import Project from Sources" on the CLion welcome dialog.
+Select your repo directory as the directory to open.
+
+This will create a new project and bring up a dialog showing your directory structure, with all the `*.m` and `*.cc` files checked.
+Un-check all the `*.m` files.
+(CLion thinks they're Objective-C files, not Octae/Matlab M-code.)
+This is easier to do if you have your code split out into an `inst/` subdirectory for the M-code and a `src/` subdirectory for the C++ oct-files.
+
+This will create a new CLion project in your repo directory.
+It will include an `.idea` subdirectory and a `CMakeLists.txt` file.
+Leave the `CMakeLists.txt` file there, even if you're not using CMake to build your project!
+CLion needs it.
+
+Then you need to point CLion at the Octave internal API sources via the `CMakeLists.txt` file.
+Add this line to `CMakeLists.txt`.
+
+-----------------------------------------------------------
+  include_directories(/usr/local/include/octave-4.4.1)
+-----------------------------------------------------------
+
+Edit it as necessary to point at the right path to your Octave installation, and the right Octave version.
+
+You may or may not want to check your project in to source control.
+Even if you do, you'll want to exclude the part of the project that holds your CLion GUI's window position, open file list, and so on.
+That's `workspace.xml`.
+
+To check the project in to source control, add this to the `.gitignore` file in your repo dir:
+
+-----------------------------------------------------------
+!.idea
+.idea/workspace.xml
+cmake-build-debug
+-----------------------------------------------------------
+
+To exclude the project from source control entirely, add this to the `.gitignore`:
+
+-----------------------------------------------------------
+.idea
+cmake-build-debug
+-----------------------------------------------------------
+
+If you're using the GNU Octave code style, you'll want to adjust the CLion editor to use it, too.
+Open Preferences (Cmd-++,++ on macOS), select Editor > Code Style > C/C++, and change the indent levels.
+All the “Indent ...” items should be set to 2, except “Label indent:” and “Indent visibility keywords ...”, which should be 0.
+Then click on the Spaces tab, and check the box for “Function call parentheses”.
+
+CLion will tend to add all your source files to the `add_executable(...)` directive in `CMakeLists.txt`.
+You don't actually need that, and it could cause problems if you have conflicting names in different oct-files.
+Go ahead and remove all but one of the `*.cc` files from `add_executable(...)`, and when you create new `.cc` files and CLion asks you if you want to add them to `CMakeLists`, choose “No”.
+
+==== Some Free C++ IDE ====
 
 _TODO: Find a free IDE to add here._
 
@@ -526,10 +588,6 @@ https://stackoverflow.com[StackOverflow] is the web's premiere Q&A site for prog
 Tag your question with the https://stackoverflow.com/questions/tagged/octave[“octave” tag].
 
 == Open Questions ==
-
-=== Constructing ++NDArray++s from doubles ===
-
-`NDArray x (42.0)` succeeds but doesn't produce the results I expect. Figure this out.
 
 === Error String Construction and `octave_value` Types ===
 

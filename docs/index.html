@@ -481,6 +481,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_using_ides_with_oct_files">5.3. Using IDEs with Oct-Files</a>
 <ul class="sectlevel3">
 <li><a href="#_creating_clion_projects">5.3.1. Creating CLion Projects</a></li>
+<li><a href="#_some_free_c_ide">5.3.2. Some Free C++ IDE</a></li>
 </ul>
 </li>
 </ul>
@@ -488,8 +489,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_other_resources">6. Other Resources</a></li>
 <li><a href="#_open_questions">7. Open Questions</a>
 <ul class="sectlevel2">
-<li><a href="#_constructing_ndarrays_from_doubles">7.1. Constructing <code>NDArray</code>s from doubles</a></li>
-<li><a href="#_error_string_construction_and_octave_value_types">7.2. Error String Construction and <code>octave_value</code> Types</a></li>
+<li><a href="#_error_string_construction_and_octave_value_types">7.1. Error String Construction and <code>octave_value</code> Types</a></li>
 </ul>
 </li>
 </ul>
@@ -1080,10 +1080,24 @@ DEFUN_DLD (ex04_basic_arithmetic, args, nargout,
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dim_vector</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Array size (dimensions)</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>idx_vector</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>()</code> or <code>{}</code> indexing/subscripting expression argument</p></td>
+</tr>
 </tbody>
 </table>
 <div class="paragraph">
-<p><code>octave_idx_type</code> is the index/one-dimensional size type for Octave arrays. A <code>dim_vector</code> is a  a list of <code>octave_idx_type</code>s and represents the size of an array (that is, its size along each dimension).</p>
+<p><code>octave_idx_type</code> is the index/one-dimensional size type for Octave arrays.
+A <code>dim_vector</code> is a  a list of <code>octave_idx_type</code>s and represents the size of an array (that is, its size along each dimension).</p>
+</div>
+<div class="paragraph">
+<p>An <code>idx_vector</code> is a more sophisticated type: it holds the argument to a <code>()</code> or <code>{}</code> indexing expression (from M-code).
+The contents of an <code>idx_vector</code> can be a scalar, a range, an index vector, or a magic colon, and the index values may be numeric or logical.</p>
+</div>
+<div class="paragraph">
+<p>In a multi-subscript M-code indexing expression (like “<code>x(1:3, 2:6, :)</code>”), an <code>idx_vector</code> represents just one of the comma-separated subscript expressions.
+The whole subscripting expression is represented in C++ by an <code>Array&lt;idx_vector&gt;</code>.
+<em>TODO: Verify that I&#8217;ve got that right.</em></p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1109,6 +1123,9 @@ DEFUN_DLD (ex05_sizes_and_indexing, args, nargout,
   octave_stdout &lt;&lt; "Array z has " &lt;&lt; sz2.ndims() &lt;&lt; " dimensions and "
       &lt;&lt; sz2.numel() &lt;&lt; " elements." &lt;&lt; std::endl;
   NDArray z2 (dim_vector (2, 3, 4, 5));
+  NDArray z3 ({2, 3, 4, 5});
+
+  idx_vector idx {1, 2, 3, 4};
 
   return ovl (y);
 }</pre>
@@ -1176,15 +1193,22 @@ So <code>i</code> starts at 0 instead of 1 here, and the <code>i &lt; y.numel ()
 </div>
 </div>
 <div class="paragraph">
-<p>You can construct a new <code>dim_vector</code> by passing it a list of sizes along each dimension.</p>
+<p>You can construct a new <code>dim_vector</code> by passing it a list of sizes along each dimension.
+And you don&#8217;t have to store that <code>dim_vector</code> in an intermediate variable; you can pass a new one directly into the <code>NDArray</code> constructor.
+Plus, the <code>dim_vector</code> constructor can take an initializer list, so you can just pass a <code>{...}</code> list in to arguments that are expecting a <code>dim_vector</code>.
+So the following two statements are equivalent to using that <code>sz2</code> <code>dim_vector</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>  NDArray z2 (dim_vector (2, 3, 4, 5));</pre>
+<pre>  NDArray z2 (dim_vector (2, 3, 4, 5));
+  NDArray z3 ({2, 3, 4, 5});</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>And you don&#8217;t have to store that <code>dim_vector</code> in an intermediate variable; you can pass a new one directly into the <code>NDArray</code> constructor.</p>
+<p>Then, to index into arrays, use <code>idx_vector</code> objects.</p>
+</div>
+<div class="paragraph">
+<p><em>TODO: Figure out how to use the <code>idx_vector</code>  constructors and write about them here.</em></p>
 </div>
 </div>
 <div class="sect2">
@@ -1230,7 +1254,7 @@ So <code>i</code> starts at 0 instead of 1 here, and the <code>i &lt; y.numel ()
 <div class="sect2">
 <h3 id="_c_templates_and_oct_functions">4.1. C++ Templates and Oct Functions</h3>
 <div class="paragraph">
-<p>Let&#8217;s go crazy. Here&#8217;s binary search as an oct-file.</p>
+<p>Let&#8217;s go crazy. Here&#8217;s binary search as an oct-file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1345,6 +1369,15 @@ DEFUN_DLD (ex10_binsearch, args, nargout,
 }</pre>
 </div>
 </div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Note:</strong> This <code>builtin_type()</code> stuff is not how you&#8217;re supposed to do it!
+You should use <code>type_name()</code> or <code>class_name()</code> instead.
+<em>TODO: Update this code to do so.</em></p>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p><em>TODO: Explain this.</em></p>
 </div>
@@ -1369,13 +1402,84 @@ DEFUN_DLD (ex10_binsearch, args, nargout,
 <div class="sect2">
 <h3 id="_using_ides_with_oct_files">5.3. Using IDEs with Oct-Files</h3>
 <div class="paragraph">
-<p><em>TODO</em></p>
+<p>Dealing with oct-files and exploring the Octave internal API is a lot easier in a C++ IDE than in a plain editor or Octave itself.
+You can edit C++ files in the Octave GUI, but it&#8217;s not designed for that.
+I like <a href="https://www.jetbrains.com/clion/">CLion</a>, a commercial IDE from JetBrains.</p>
+</div>
+<div class="paragraph">
+<p><em>TODO: More stuff.</em></p>
 </div>
 <div class="sect3">
 <h4 id="_creating_clion_projects">5.3.1. Creating CLion Projects</h4>
 <div class="paragraph">
-<p><em>TODO</em></p>
+<p>Let&#8217;s assume you have your M-file and oct-file code in a SCM workspace like a Git or Mercurial repo.</p>
 </div>
+<div class="paragraph">
+<p>Create a new CLion project by clicking on "Import Project from Sources" on the CLion welcome dialog.
+Select your repo directory as the directory to open.</p>
+</div>
+<div class="paragraph">
+<p>This will create a new project and bring up a dialog showing your directory structure, with all the <code>*.m</code> and <code>*.cc</code> files checked.
+Un-check all the <code>*.m</code> files.
+(CLion thinks they&#8217;re Objective-C files, not Octae/Matlab M-code.)
+This is easier to do if you have your code split out into an <code>inst/</code> subdirectory for the M-code and a <code>src/</code> subdirectory for the C++ oct-files.</p>
+</div>
+<div class="paragraph">
+<p>This will create a new CLion project in your repo directory.
+It will include an <code>.idea</code> subdirectory and a <code>CMakeLists.txt</code> file.
+Leave the <code>CMakeLists.txt</code> file there, even if you&#8217;re not using CMake to build your project!
+CLion needs it.</p>
+</div>
+<div class="paragraph">
+<p>Then you need to point CLion at the Octave internal API sources via the <code>CMakeLists.txt</code> file.
+Add this line to <code>CMakeLists.txt</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  include_directories(/usr/local/include/octave-4.4.1)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Edit it as necessary to point at the right path to your Octave installation, and the right Octave version.</p>
+</div>
+<div class="paragraph">
+<p>You may or may not want to check your project in to source control.
+Even if you do, you&#8217;ll want to exclude the part of the project that holds your CLion GUI&#8217;s window position, open file list, and so on.
+That&#8217;s <code>workspace.xml</code>.</p>
+</div>
+<div class="paragraph">
+<p>To check the project in to source control, add this to the <code>.gitignore</code> file in your repo dir:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>!.idea
+.idea/workspace.xml
+cmake-build-debug</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To exclude the project from source control entirely, add this to the <code>.gitignore</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>.idea
+cmake-build-debug</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you&#8217;re using the GNU Octave code style, you&#8217;ll want to adjust the CLion editor to use it, too.
+Open Preferences (Cmd-<code>,</code> on macOS), select Editor &gt; Code Style &gt; C/C++, and change the indent levels.
+All the “Indent &#8230;&#8203;” items should be set to 2, except “Label indent:” and “Indent visibility keywords &#8230;&#8203;”, which should be 0.
+Then click on the Spaces tab, and check the box for “Function call parentheses”.</p>
+</div>
+<div class="paragraph">
+<p>CLion will tend to add all your source files to the <code>add_executable(...)</code> directive in <code>CMakeLists.txt</code>.
+You don&#8217;t actually need that, and it could cause problems if you have conflicting names in different oct-files.
+Go ahead and remove all but one of the <code>*.cc</code> files from <code>add_executable(...)</code>, and when you create new <code>.cc</code> files and CLion asks you if you want to add them to <code>CMakeLists</code>, choose “No”.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_some_free_c_ide">5.3.2. Some Free C++ IDE</h4>
 <div class="paragraph">
 <p><em>TODO: Find a free IDE to add here.</em></p>
 </div>
@@ -1414,13 +1518,7 @@ Tag your question with the <a href="https://stackoverflow.com/questions/tagged/o
 <h2 id="_open_questions">7. Open Questions</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_constructing_ndarrays_from_doubles">7.1. Constructing <code>NDArray</code>s from doubles</h3>
-<div class="paragraph">
-<p><code>NDArray x (42.0)</code> succeeds but doesn&#8217;t produce the results I expect. Figure this out.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_error_string_construction_and_octave_value_types">7.2. Error String Construction and <code>octave_value</code> Types</h3>
+<h3 id="_error_string_construction_and_octave_value_types">7.1. Error String Construction and <code>octave_value</code> Types</h3>
 <div class="paragraph">
 <p>Why can&#8217;t I do this? It results in a compiler error saying <code>no viable conversion from 'octave_value' to 'std::string'</code>.</p>
 </div>
@@ -1439,7 +1537,7 @@ Tag your question with the <a href="https://stackoverflow.com/questions/tagged/o
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-01-29 19:23:26 -0500
+Last updated 2019-01-29 20:26:16 -0500
 </div>
 </div>
 </body>
