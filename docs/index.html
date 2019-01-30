@@ -774,11 +774,9 @@ endfunction</pre>
 DEFUN_DLD (ex02_scalar_numerics, args, nargout,
   "Basic numeric arrays")
 {
-  NDArray x (42);
-  NDArray y (0.0);
-  y(0) = NAN;
-  NDArray out = x + y;
-  return octave_value (out);
+  Matrix x (1, 1, 42.0);
+  Matrix y (1, 1, NAN);
+  return octave_value (x + y);
 }</pre>
 </div>
 </div>
@@ -791,59 +789,66 @@ You need this to get access to the <code>NAN</code> constant.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>  NDArray x (42.0);</pre>
+<pre>  Matrix x (1, 1, 42.0);
+  Matrix y (1, 1, NAN);</pre>
 </div>
 </div>
 <div class="paragraph">
-<p><em>TODO: This section about creating NDArrays from doubles is wrong! The input conversions don&#8217;t work the way I thought. They&#8217;re actually getting converted to characters or something.</em></p>
+<p>This creates a scalar <code>double</code> array containing the value 42.0.
+The constructor <code>Matrix (r, c, x)</code> constructs an <em>r</em>-by-<em>c</em> 2-dimensional matrix with its element values initialized to <em>x</em>.</p>
 </div>
 <div class="paragraph">
-<p>An <code>NDArray</code> is an n-dimensional Octave <code>double</code> array. <code>NDArray &lt;name&gt; (&lt;x&gt;)</code>, where <code>&lt;x&gt;</code> is a C++ <code>double</code> value, creates a scalar (1-by-1) Octave <code>double</code> array and initializes it with the value you pass in.</p>
+<p>The following alternatives are <em>wrong</em>.
+You might think you could do them, and they will even compile and create arrays, but their values will be incorrect!</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  // WRONG: Produces incorrect values
+  NDArray x (42.3);
+  NDArray y (NAN);</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The issue here is that there is no exact constructor defined for <code>NDArray (double)</code>.
+Instead, the inputs get silently coerced to <em>characters</em>, and then they&#8217;re converted back to doubles.
+This causes numbers outside the range of 0-255 and NaN/Inf values to be silently converted to 0, and numbers with fractional parts to be rounded down to the nearest integer.</p>
+</div>
+<div class="paragraph">
+<p>So avoid the single-argument <code>NDArray</code> constructor unless you really know what you&#8217;re doing with it.</p>
+</div>
+<div class="paragraph">
+<p>A correct alternative is the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  NDArray x ({1, 1}, 123.456);     // create scalar
+  NDArray y ({1, 2, 3}, 999.999);  // create 1-by-2-by-3 array</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>An <code>NDArray</code> is an n-dimensional Octave <code>double</code> array. <code>NDArray &lt;name&gt; (&lt;dim_vec&gt;, &lt;x&gt;)</code>, where <code>&lt;dim_vec&gt;</code> is a <code>dim_vector</code> object and <code>&lt;x&gt;</code> is a C++ <code>double</code> value, creates an Octave <code>double</code> array of the given dimensions and initializes its elements with the value you pass in.
+<code>dim_vector</code> defines a construct that takes a list of ints as its inputs, so you can use the <code>{...}</code> “initializer list” syntax in place of it.</p>
 </div>
 <div class="paragraph">
 <p>In Octave, every numeric literal is a <code>double</code>, whether you write it as <code>42</code> or <code>42.0</code>.
 In C++, they&#8217;re distinct types: <code>42</code> is an <code>int</code>, and <code>42.0</code> is a <code>double</code>.
-But because you&#8217;re making an <code>NDArray</code>, whatever you pass in gets converted to a double.
-(Usually. You can&#8217;t say <code>NDArray y(0)</code>. I don&#8217;t know why. Perhaps due to integer/null-pointer ambiguity?)
-<code>NDArray</code> knows its element data type, and that type is always <code>double</code>. I think.</p>
+But because you&#8217;re making a <code>Matrix</code> or <code>NDArray</code>, whatever you pass in gets converted to a double.
+<code>Matrix</code> and <code>NDArray</code> know their element data type, and that type is always <code>double</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>  NDArray y (0.0);
-  y(0) = NAN;</pre>
+<pre>  return octave_value (x + y);</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once you create an <code>NDArray</code>, you can assign values to its elements using <code>()</code>-indexing, like you can in M-code.
-But, in C/C++, arrays are <a href="https://en.wikipedia.org/wiki/Zero-based_numbering">zero-indexed</a> instead of 1-indexed like in M-code.
-And you index into an <code>NDArray</code> C-style.</p>
-</div>
-<div class="paragraph">
-<p>You can&#8217;t just say <code>NDArray y (NAN);</code> directly.
-That gives you a <code>0</code> instead of <code>NaN</code>.
-I don&#8217;t know why.
-Instead, you have to create a new array, and then assign over its element&#8217;s value.
-<em>(TODO: Find out why.)</em></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>  NDArray out = x + y;</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can do math with C++ Octave array types using <code>+</code>, <code>-</code>, <code>*</code>, and other arithmetic operators, similar to how you can in M-code.
-(<em>TODO: Find out whether <code>*</code> is <code>times</code> or <code>mtimes</code>.</em>)</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>  return octave_value (out);</pre>
-</div>
+<p>You can do math with C++ Octave array types using <code>+</code>, <code>-</code>, and other arithmetic operators, similar to how you can in M-code.</p>
 </div>
 <div class="paragraph">
 <p>You can&#8217;t return an <code>NDArray</code> directly from your oct function.
 That will give you a C++ compilation error.
-You need to convert it to an <code>octave_value</code>.
-(I don&#8217;t know why.)
+You need to explicitly convert it to an <code>octave_value</code>.
+(I don&#8217;t know why.
+Probably because there&#8217;s not a constructor of the right form defined.)
 But you can omit the <code>octave_value_list (...)</code> around your <code>octave_value (...)</code> – there is an automatic conversion from <code>octave_value</code> to an <code>octave_value_list</code>.</p>
 </div>
 </div>
@@ -1128,6 +1133,19 @@ So you can assign an <code>int</code> to an <code>octave_idx_type</code>, but yo
 </div>
 <div class="listingblock">
 <div class="content">
+<pre>  for (oct_idx i = 0; i &lt; y.numel (); i++) {
+    y(i) = x(i) + i;
+  }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you create an <code>NDArray</code>, you can assign values to its elements using <code>()</code>-indexing, like you can in M-code.
+But, in C/C++, arrays are <a href="https://en.wikipedia.org/wiki/Zero-based_numbering">zero-indexed</a> instead of 1-indexed like in M-code.
+And you index into an <code>NDArray</code> C-style.
+So <code>i</code> starts at 0 instead of 1 here, and the <code>i &lt; y.numel ()</code> comparison is <code>&lt;</code> instead of <code>&lt;=</code> like it would be in M-code.</p>
+</div>
+<div class="listingblock">
+<div class="content">
 <pre>  octave_stdout &lt;&lt; "Array z has " &lt;&lt; sz2.ndims() &lt;&lt; " dimensions and "
       &lt;&lt; sz2.numel() &lt;&lt; " elements." &lt;&lt; std::endl;</pre>
 </div>
@@ -1408,7 +1426,7 @@ Tag your question with the <a href="https://stackoverflow.com/questions/tagged/o
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-01-29 18:24:10 -0500
+Last updated 2019-01-29 19:11:48 -0500
 </div>
 </div>
 </body>

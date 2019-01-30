@@ -5,9 +5,7 @@
 DEFUN_DLD (ex02_scalar_numerics, args, nargout,
   "Basic numeric arrays")
 {
-  NDArray x (42);
-  NDArray y (0.0);
-  y(0) = NAN;
-  NDArray out = x + y;
-  return octave_value (out);
+  Matrix x (1, 1, 42.0);
+  Matrix y (1, 1, NAN);
+  return octave_value (x + y);
 }

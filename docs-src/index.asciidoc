@@ -184,49 +184,54 @@ Let's break down the new stuff:
 You need this to get access to the `NAN` constant.
 
 ---------------------------------------
-  NDArray x (42.0);
+  Matrix x (1, 1, 42.0);
+  Matrix y (1, 1, NAN);
 ---------------------------------------
 
-_TODO: This section about creating NDArrays from doubles is wrong! The input conversions don't work the way I thought. They're actually getting converted to characters or something._
+This creates a scalar `double` array containing the value 42.0.
+The constructor `Matrix (r, c, x)` constructs an __r__-by-__c__ 2-dimensional matrix with its element values initialized to __x__.
 
-An `NDArray` is an n-dimensional Octave `double` array. `NDArray <name> (<x>)`, where `<x>` is a C++ `double` value, creates a scalar (1-by-1) Octave `double` array and initializes it with the value you pass in.
+The following alternatives are _wrong_.
+You might think you could do them, and they will even compile and create arrays, but their values will be incorrect!
+
+---------------------------------------
+  // WRONG: Produces incorrect values
+  NDArray x (42.3);
+  NDArray y (NAN);
+---------------------------------------
+
+The issue here is that there is no exact constructor defined for `NDArray (double)`.
+Instead, the inputs get silently coerced to _characters_, and then they're converted back to doubles.
+This causes numbers outside the range of 0-255 and NaN/Inf values to be silently converted to 0, and numbers with fractional parts to be rounded down to the nearest integer.
+
+So avoid the single-argument `NDArray` constructor unless you really know what you're doing with it.
+
+A correct alternative is the following:
+
+---------------------------------------
+  NDArray x ({1, 1}, 123.456);     // create scalar
+  NDArray y ({1, 2, 3}, 999.999);  // create 1-by-2-by-3 array
+---------------------------------------
+
+An `NDArray` is an n-dimensional Octave `double` array. `NDArray <name> (<dim_vec>, <x>)`, where `<dim_vec>` is a `dim_vector` object and `<x>` is a C++ `double` value, creates an Octave `double` array of the given dimensions and initializes its elements with the value you pass in.
+`dim_vector` defines a construct that takes a list of ints as its inputs, so you can use the `{...}` “initializer list” syntax in place of it.
 
 In Octave, every numeric literal is a `double`, whether you write it as `42` or `42.0`.
 In C++, they're distinct types: `42` is an `int`, and `42.0` is a `double`.
-But because you're making an `NDArray`, whatever you pass in gets converted to a double.
-(Usually. You can't say `NDArray y(0)`. I don't know why. Perhaps due to integer/null-pointer ambiguity?)
-`NDArray` knows its element data type, and that type is always `double`. I think.
+But because you're making a `Matrix` or `NDArray`, whatever you pass in gets converted to a double.
+`Matrix` and `NDArray` know their element data type, and that type is always `double`.
 
 ---------------------------------------
-  NDArray y (0.0);
-  y(0) = NAN;
+  return octave_value (x + y);
 ---------------------------------------
 
-Once you create an `NDArray`, you can assign values to its elements using `()`-indexing, like you can in M-code.
-But, in C/C++, arrays are https://en.wikipedia.org/wiki/Zero-based_numbering[zero-indexed] instead of 1-indexed like in M-code.
-And you index into an `NDArray` C-style.
-
-You can't just say `NDArray y (NAN);` directly.
-That gives you a `0` instead of `NaN`.
-I don't know why.
-Instead, you have to create a new array, and then assign over its element's value.
-_(TODO: Find out why.)_
-
----------------------------------------
-  NDArray out = x + y;
----------------------------------------
-
-You can do math with C++ Octave array types using `+`, `-`, `*`, and other arithmetic operators, similar to how you can in M-code.
-(_TODO: Find out whether `*` is `times` or `mtimes`._)
-
----------------------------------------
-  return octave_value (out);
----------------------------------------
+You can do math with C++ Octave array types using `+`, `-`, and other arithmetic operators, similar to how you can in M-code.
 
 You can't return an `NDArray` directly from your oct function.
 That will give you a C++ compilation error.
-You need to convert it to an `octave_value`.
-(I don't know why.)
+You need to explicitly convert it to an `octave_value`.
+(I don't know why.
+Probably because there's not a constructor of the right form defined.)
 But you can omit the `octave_value_list (...)` around your `octave_value (...)` – there is an automatic conversion from `octave_value` to an `octave_value_list`.
 
 
@@ -389,6 +394,17 @@ Again, use `octave_idx_type` instead of `int` for indexing into Octave arrays.
 An `octave_idx_type` is an int, and probably wider than a plain `int`.
 So you can assign an `int` to an `octave_idx_type`, but you cannot safely assign an `octave_idx_type` to an `int`.
 (If you're compiling in 64-bit mode, your compiler should give you a warning if you do so.)
+
+---------------------------------------
+  for (oct_idx i = 0; i < y.numel (); i++) {
+    y(i) = x(i) + i;
+  }
+---------------------------------------
+
+Once you create an `NDArray`, you can assign values to its elements using `()`-indexing, like you can in M-code.
+But, in C/C++, arrays are https://en.wikipedia.org/wiki/Zero-based_numbering[zero-indexed] instead of 1-indexed like in M-code.
+And you index into an `NDArray` C-style.
+So `i` starts at 0 instead of 1 here, and the `i < y.numel ()` comparison is `<` instead of `<=` like it would be in M-code.
 
 ---------------------------------------
   octave_stdout << "Array z has " << sz2.ndims() << " dimensions and "
