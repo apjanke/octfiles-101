@@ -279,7 +279,14 @@ The values passed in to `error()` need to be basic C++ types like `char *`, `int
 Note that if you pass strings in to `error()`, they must be C-style strings (`char *`) and not C++ `std::string` objects.
 Any `std::string` needs to be converted to a `char *` by calling `c_str()` on it.
 
+---------------------------------------
+  if (x.any_element_is_nan ()) {
+    warning ("NaNs present in input");
+  }
+---------------------------------------
+
 As in M-code, `warning()` works the same way as `error()`, accepting `printf`-style arguments.
+There are various `is_*` methods you can call on arrays to test their contents.
 
 If you want to include an error or warning identifier, you can't just include the ID as an extra first argument like in M-code. You need to call the `error_with_id` or `warning_with_id` variants instead.
 
@@ -295,6 +302,8 @@ You use `array_value()` and related conversion functions to convert them into th
   NDArray x = args(0).array_value ();
 ---------------------------------------
 
+The `array_value()` method converts a generic `octave_value` object to an `NDArray` object, so you can do element access and math on it.
+In production code, you really need to check the input type first before doing the conversion, to avoid getting a runtime error if the input is of the wrong type.
 
 The oct function's outputs are always returned as an `octave_value_list`, which corresponds to a comma-separated list in M-code.
 
@@ -312,6 +321,7 @@ The `ovl()` function is a convenience function that is basically shorthand for c
 ---------------------------------------
 
 You can assign into an `octave_value_list` using `()`-indexing, like you can with an `Array`, but the right-hand-side values must themselves be ++octave_value++s or compatible types.
+++NDArray++s and similar objects will automatically convert to ++octave_value++s when used in this context.
 
 You can't just say `return octave_value_list (y, x)` when `y` and `x` are ++NDArray++s.
 I don't know why.

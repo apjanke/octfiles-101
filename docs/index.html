@@ -873,7 +873,7 @@ DEFUN_DLD (ex03_inputs_and_error_checking, args, nargout,
   NDArray x = args(0).array_value ();
   NDArray y = args(1).array_value ();
   if (x.any_element_is_nan ()) {
-    warning ("");
+    warning ("NaNs present in input");
   }
 
   return ovl (y, x);
@@ -926,8 +926,16 @@ And you need to explicitly cast them to <code>(long)</code> for compatibility wi
 <p>Note that if you pass strings in to <code>error()</code>, they must be C-style strings (<code>char *</code>) and not C++ <code>std::string</code> objects.
 Any <code>std::string</code> needs to be converted to a <code>char *</code> by calling <code>c_str()</code> on it.</p>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre>  if (x.any_element_is_nan ()) {
+    warning ("NaNs present in input");
+  }</pre>
+</div>
+</div>
 <div class="paragraph">
-<p>As in M-code, <code>warning()</code> works the same way as <code>error()</code>, accepting <code>printf</code>-style arguments.</p>
+<p>As in M-code, <code>warning()</code> works the same way as <code>error()</code>, accepting <code>printf</code>-style arguments.
+There are various <code>is_*</code> methods you can call on arrays to test their contents.</p>
 </div>
 <div class="paragraph">
 <p>If you want to include an error or warning identifier, you can&#8217;t just include the ID as an extra first argument like in M-code. You need to call the <code>error_with_id</code> or <code>warning_with_id</code> variants instead.</p>
@@ -946,6 +954,10 @@ You use <code>array_value()</code> and related conversion functions to convert t
 <div class="content">
 <pre>  NDArray x = args(0).array_value ();</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The <code>array_value()</code> method converts a generic <code>octave_value</code> object to an <code>NDArray</code> object, so you can do element access and math on it.
+In production code, you really need to check the input type first before doing the conversion, to avoid getting a runtime error if the input is of the wrong type.</p>
 </div>
 <div class="paragraph">
 <p>The oct function&#8217;s outputs are always returned as an <code>octave_value_list</code>, which corresponds to a comma-separated list in M-code.</p>
@@ -967,7 +979,8 @@ You use <code>array_value()</code> and related conversion functions to convert t
 </div>
 </div>
 <div class="paragraph">
-<p>You can assign into an <code>octave_value_list</code> using <code>()</code>-indexing, like you can with an <code>Array</code>, but the right-hand-side values must themselves be <code>octave_value</code>s or compatible types.</p>
+<p>You can assign into an <code>octave_value_list</code> using <code>()</code>-indexing, like you can with an <code>Array</code>, but the right-hand-side values must themselves be <code>octave_value</code>s or compatible types.
+<code>NDArray</code>s and similar objects will automatically convert to <code>octave_value</code>s when used in this context.</p>
 </div>
 <div class="paragraph">
 <p>You can&#8217;t just say <code>return octave_value_list (y, x)</code> when <code>y</code> and <code>x</code> are <code>NDArray</code>s.
@@ -1426,7 +1439,7 @@ Tag your question with the <a href="https://stackoverflow.com/questions/tagged/o
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-01-29 19:11:48 -0500
+Last updated 2019-01-29 19:23:26 -0500
 </div>
 </div>
 </body>
